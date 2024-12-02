@@ -1,3 +1,4 @@
+import 'package:damdleaders_flutter/features/auth/screens/Forget_Password.dart';
 import 'package:damdleaders_flutter/features/auth/screens/register_screen.dart';
 import 'package:damdleaders_flutter/shared/login_text_fields.dart';
 import 'package:flutter/material.dart';
@@ -54,12 +55,35 @@ class LoginScreen extends StatelessWidget {
                   return null;
                 },
               ),
-              const SizedBox(height: 24),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ForgetPasswordScreen()),
+                    );
+                  },
+                  child: const Text(
+                    'Forget Password?',
+                    style: TextStyle(
+                      color: Color(0xFF130160),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+
               // Bouton de connexion
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    // Logique pour la connexion
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ForgetPasswordScreen()),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF130160),
@@ -86,14 +110,13 @@ class LoginScreen extends StatelessWidget {
                 children: [
                   const Text("You don't have an account yet?"),
                   TextButton(
-                          onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            RegisterScreen()), 
-                  );
-                },
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RegisterScreen()),
+                      );
+                    },
                     child: const Text(
                       'Sign Up',
                       style: TextStyle(

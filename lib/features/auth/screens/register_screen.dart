@@ -19,6 +19,7 @@ class RegisterScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 50),
               const Text(
                 'Create An Account',
                 style: TextStyle(
@@ -147,20 +148,17 @@ class RegisterScreen extends StatelessWidget {
                 children: [
                   const Text("You don't have an account yet?"),
                   TextButton(
-                       onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            LoginScreen()), 
-                  );
-                },
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                      );
+                    },
                     child: const Text(
                       'Sign In',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Color(
-                            0xFF130160), 
+                        color: Color(0xFFFF9228),
                       ),
                     ),
                   ),
