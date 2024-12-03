@@ -1,4 +1,7 @@
 import 'package:damdleaders_flutter/features/Home/Screens/AddScreen.dart';
+import 'package:damdleaders_flutter/features/Home/Screens/EditProfileView.dart';
+import 'package:damdleaders_flutter/features/Home/Screens/ProfileHomeView.dart';
+import 'package:damdleaders_flutter/features/Home/Screens/SettingsView.dart';
 import 'package:damdleaders_flutter/features/Home/Screens/videoScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -14,10 +17,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<Widget> _pages = [
     VideoScreen(),
-    const Center(child: Text("Search Page")),
+    ProfileHomeView(),
     AddPostScreen(),
-    const Center(child: Text("Messages Page")),
-    const Center(child: Text("Profile Page")),
+    EditProfileView(),
+    SettingsView()
   ];
 
   void _onItemTapped(int index) {
