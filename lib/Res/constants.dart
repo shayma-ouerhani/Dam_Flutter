@@ -7,7 +7,7 @@ import '../features/Home/Screens/videoScreen.dart';
 List pages = [
   VideoScreen(),
   const ProfileScreen(uid: "eee"),
-  AddScreen(),
+  AddPostScreen(),
   const Text('Messages Screen'),
   const ProfileScreen(uid: 'dddd'),
 ];

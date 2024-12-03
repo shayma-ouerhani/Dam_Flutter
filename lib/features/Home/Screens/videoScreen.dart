@@ -244,8 +244,8 @@ class VideoScreen extends StatelessWidget {
    VideoScreen({super.key});
 
   final RxList<String> videos = RxList<String>([
-    'https://res.cloudinary.com/dcjtuxprn/video/upload/v1731524251/UploadLeaders/Enregistrement%20de%20l%27%C3%83%C2%A9cran%202024-07-07%20104521.mp4',
-    'https://res.cloudinary.com/dcjtuxprn/video/upload/v1731524251/UploadLeaders/Enregistrement%20de%20l%27%C3%83%C2%A9cran%202024-07-07%20104521.mp4',
+    'https://res.cloudinary.com/dcjtuxprn/video/upload/v1733151617/UploadLeaders/video-B1BEEC93-A9E5-4EE0-9434-6628116D0EBC.mp4',
+    'https://res.cloudinary.com/dcjtuxprn/video/upload/v1733151617/UploadLeaders/video-B1BEEC93-A9E5-4EE0-9434-6628116D0EBC.mp4',
     'https://res.cloudinary.com/dcjtuxprn/video/upload/v1731524251/UploadLeaders/Enregistrement%20de%20l%27%C3%83%C2%A9cran%202024-07-07%20104521.mp4',
   ]);
 
@@ -336,11 +336,11 @@ class VideoScreen extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Container(
-                              padding: const EdgeInsets.only(left: 20),
+                              padding: const EdgeInsets.only(left: 2,bottom: 5),
                               child: const Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceEvenly,
+                                MainAxisAlignment.end,
                                 children: [
                                   Text(
                                     "Username",
@@ -350,6 +350,7 @@ class VideoScreen extends StatelessWidget {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
+                                  SizedBox(height: 5), // Espacement entre Username et Caption
                                   Text(
                                     "Caption for the video",
                                     style: TextStyle(
@@ -357,6 +358,7 @@ class VideoScreen extends StatelessWidget {
                                       color: Colors.white,
                                     ),
                                   ),
+                                  SizedBox(height: 5), // Espacement entre Username et Caption
                                   Row(
                                     children: [
                                       Icon(
@@ -373,7 +375,8 @@ class VideoScreen extends StatelessWidget {
                                         ),
                                       ),
                                     ],
-                                  )
+                                  ),
+                                  SizedBox(height: 5), // Espacement entre Username et Caption
                                 ],
                               ),
                             ),
@@ -452,10 +455,10 @@ class VideoScreen extends StatelessWidget {
                                     )
                                   ],
                                 ),
-                                CircleAnimation(
-                                  child: buildMusicAlbum(
-                                      "https://example.com/album.jpg"),
-                                ),
+                                // CircleAnimation(
+                                //   child: buildMusicAlbum(
+                                //       "https://example.com/album.jpg"),
+                                // ),
                               ],
                             ),
                           ),

@@ -42,6 +42,7 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
+//        android:requestLegacyExternalStorage="true"
     }
 
     buildTypes {
@@ -51,6 +52,8 @@ android {
             signingConfig = signingConfigs.debug
         }
     }
+    // Si tu utilises Android 10 ou une version supérieure, ajoute cette ligne :
+//    android:requestLegacyExternalStorage="true"
 }
 
 flutter {

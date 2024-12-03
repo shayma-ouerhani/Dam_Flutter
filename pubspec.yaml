@@ -35,6 +35,7 @@ dependencies:
   video_compress: ^3.1.0
   cupertino_icons: ^1.0.6
   get: ^4.6.1
+  image_picker: ^0.8.5+3
 
 
 
