@@ -33,7 +33,6 @@ class _EditProfileState extends State<EditProfileView> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.grey[200],
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -43,7 +42,7 @@ class _EditProfileState extends State<EditProfileView> {
                 padding: const EdgeInsets.all(16.0),
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Color.fromARGB(0, 51, 32, 133), Color.fromARGB(255, 39, 14, 108)],                    
+                    colors: [Color(0xFF301060), Colors.black],                    
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -107,7 +106,7 @@ class _EditProfileState extends State<EditProfileView> {
                           const Row(
                             children: [
                               const Icon(
-                                Icons.info,
+                                Icons.person,
                                 size: 24.0,
                                 color: Colors.deepOrange,
                               ),
@@ -183,7 +182,7 @@ class _EditProfileState extends State<EditProfileView> {
                           const Row(
                             children: [
                               const Icon(
-                                Icons.info,
+                                Icons.school,
                                 size: 24.0,
                                 color: Colors.deepOrange,
                               ),
@@ -241,7 +240,7 @@ class _EditProfileState extends State<EditProfileView> {
                           const Row(
                             children: [
                               const Icon(
-                                Icons.info,
+                                Icons.description,
                                 size: 24.0,
                                 color: Colors.deepOrange,
                               ),
@@ -332,7 +331,7 @@ class _EditProfileState extends State<EditProfileView> {
                   });
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.deepPurple,
+                  backgroundColor: const Color.fromARGB(255, 48, 0, 131),
                   minimumSize: const Size(300, 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
