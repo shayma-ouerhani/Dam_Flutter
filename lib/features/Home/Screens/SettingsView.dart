@@ -31,9 +31,7 @@ class SettingsView extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 50,
-                      backgroundImage: NetworkImage(
-                        'https://res.cloudinary.com/dcjtuxprn/image/upload/v1733151304/UploadLeaders/image.jpg', // Replace with the user's profile picture URL
-                      ),
+                      backgroundImage: AssetImage('assets/yassineImage.jpg') as ImageProvider,
                     ),
                     SizedBox(height: 10),
                     Text(

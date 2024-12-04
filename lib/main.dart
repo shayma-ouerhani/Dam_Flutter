@@ -1,4 +1,5 @@
 import 'package:damdleaders_flutter/features/Home/Screens/homeScreen.dart';
+import 'package:damdleaders_flutter/features/auth/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'features/Home/Screens/videoScreen.dart';
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:  const HomeScreen(), // Définit WelcomeScreen comme écran d'accueil
+      home: const WelcomeScreen(), // Définit WelcomeScreen comme écran d'accueil
     );
   }
 }
