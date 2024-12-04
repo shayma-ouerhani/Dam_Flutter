@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
     VideoScreen(),
     ProfileHomeView(),
     AddPostScreen(),
-    EditProfileView(),
+    const Text("libraryScreen"),
     SettingsView()
   ];
 
