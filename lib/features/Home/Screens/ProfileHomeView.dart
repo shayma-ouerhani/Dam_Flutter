@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:damdleaders_flutter/features/Home/Screens/EditProfileView.dart';
 import 'package:flutter/material.dart';
 
 class ProfileHomeView extends StatelessWidget {
@@ -104,6 +105,12 @@ class ProfileHomeView extends StatelessWidget {
                       color: Colors.yellow,
                     ),
                     onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              //builder: (context) => ListeCondidat()),
+                              builder: (context) => EditProfileView()),
+                        );
                       // EditProfileView();
                     },
                     tooltip: 'Edit', // Optional: Tooltip when the user hovers or long-presses

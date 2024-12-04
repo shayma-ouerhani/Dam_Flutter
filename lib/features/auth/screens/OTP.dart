@@ -76,7 +76,7 @@ class OtpScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF130160),
                   padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 120),
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 115),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),

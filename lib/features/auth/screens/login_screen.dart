@@ -138,7 +138,7 @@ class LoginScreen extends StatelessWidget {
                       backgroundColor: const Color(0xFF130160),
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 162),
+                          vertical: 15, horizontal: 140),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),

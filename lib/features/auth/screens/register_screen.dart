@@ -120,7 +120,7 @@ class RegisterScreen extends StatelessWidget {
                       backgroundColor: const Color(0xFF130160),
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 162),
+                          vertical: 15, horizontal: 135),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -143,21 +143,27 @@ class RegisterScreen extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFD6CDFE),
                       padding: const EdgeInsets.symmetric(
-                          vertical: 14, horizontal: 100),
+                          vertical: 10, horizontal: 75),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    icon: const Icon(Icons.email_outlined,
-                        color: Color(0xFF130160)),
-                    label: const Text(
-                      'Sign up with Google',
-                      style: TextStyle(
+                    icon: const Padding(
+                      padding: EdgeInsets.only(right: 0.0),
+                      child: Icon(
+                        Icons.email_outlined,
                         color: Color(0xFF130160),
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
                       ),
                     ),
+                    label: const Text(
+                          'Sign up with Google',
+                          style: TextStyle(
+                            color: Color(0xFF130160),
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      
                   ),
                 ),
                 const SizedBox(height: 16),
