@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'package:damdleaders_flutter/features/auth/screens/login_screen.dart';
 import 'package:damdleaders_flutter/shared/login_text_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class RegisterScreen extends StatelessWidget {
   final TextEditingController firstNameController = TextEditingController();
@@ -12,6 +14,40 @@ class RegisterScreen extends StatelessWidget {
 
   final _formKey = GlobalKey<FormState>(); // Clé pour le formulaire
 
+  Future<void> registerUser({
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String password,
+  }) async {
+    const String apiUrl =
+        "http://10.0.2.2:3000/auth/signup"; 
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode({
+          "name": firstName,
+          "lastname": lastName,
+          "email": email,
+          "password": password,
+        }),
+      );
+
+      if (response.statusCode == 201) {
+        print("User registered successfully");
+      } else {
+        final responseBody = jsonDecode(response.body);
+        print("Registration failed: ${responseBody['message']}");
+      }
+    } catch (error) {
+      print("Error registering user: $error");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,8 +55,7 @@ class RegisterScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Form(
-            // Encapsuler le formulaire
-            key: _formKey,
+            key: _formKey, // Encapsuler le formulaire
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -102,17 +137,39 @@ class RegisterScreen extends StatelessWidget {
                 const SizedBox(height: 24),
                 Center(
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        // Formulaire valide : continuer l'inscription
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text('Form Submitted Successfully!')),
-                        );
+                        try {
+                          await registerUser(
+                            firstName: firstNameController.text,
+                            lastName: lastNameController.text,
+                            email: emailController.text,
+                            password: passwordController.text,
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Form Submitted Successfully!'),
+                            ),
+                          );
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginScreen(),
+                            ),
+                          );
+                        } catch (error) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Registration Failed: $error'),
+                            ),
+                          );
+                        }
                       } else {
                         // Afficher les erreurs
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Please fill out the form')),
+                          const SnackBar(
+                            content: Text('Please fill out the form'),
+                          ),
                         );
                       }
                     },
@@ -120,7 +177,9 @@ class RegisterScreen extends StatelessWidget {
                       backgroundColor: const Color(0xFF130160),
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 135),
+                        vertical: 15,
+                        horizontal: 135,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -143,27 +202,25 @@ class RegisterScreen extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFD6CDFE),
                       padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 75),
+                        vertical: 10,
+                        horizontal: 75,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    icon: const Padding(
-                      padding: EdgeInsets.only(right: 0.0),
-                      child: Icon(
-                        Icons.email_outlined,
-                        color: Color(0xFF130160),
-                      ),
+                    icon: const Icon(
+                      Icons.email_outlined,
+                      color: Color(0xFF130160),
                     ),
                     label: const Text(
-                          'Sign up with Google',
-                          style: TextStyle(
-                            color: Color(0xFF130160),
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      
+                      'Sign up with Google',
+                      style: TextStyle(
+                        color: Color(0xFF130160),
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -176,7 +233,8 @@ class RegisterScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => LoginScreen()),
+                            builder: (context) => LoginScreen(),
+                          ),
                         );
                       },
                       child: const Text(
