@@ -36,30 +36,25 @@ class _AddPostScreenState extends State<AddPostScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Add Post"),
-        backgroundColor: Colors.blue,
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            const Row(
               children: [
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 25,
                   backgroundImage: NetworkImage(
                       "https://res.cloudinary.com/dcjtuxprn/image/upload/v1732755984/UploadLeaders/1000014203.jpg"), // Remplace par l'image de l'utilisateur
                 ),
-                const SizedBox(width: 10),
+                SizedBox(width: 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
                       "yesser khaloui",
                       style: TextStyle(
@@ -102,7 +97,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
             Row(
               children: [
                 IconButton(
-                  icon: const Icon(Icons.video_library, color: Colors.orange),
+                  icon: const Icon(
+                    Icons.video_library,
+                    color: Color(0xFFFF9228),
+                  ),
                   onPressed: _pickVideo, // Appel correct de la fonction
                 ),
                 const Text("Add a video"),
@@ -122,22 +120,23 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 ),
               ),
             const Spacer(),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Action pour publier le post
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+            Row(
+              children: [
+                Spacer(), // Espace pour décaler à droite
+                TextButton(
+                  onPressed: () {
+                    // Action du bouton "Post" sans arrière-plan
+                  },
+                  child: Text(
+                    "Post",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFFFF9228),
+                    ),
+                  ),
                 ),
-                child: const Text(
-                  "Post",
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-            ),
+              ],
+            )
           ],
         ),
       ),
