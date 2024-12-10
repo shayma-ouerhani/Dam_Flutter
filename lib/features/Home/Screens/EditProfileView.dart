@@ -109,8 +109,7 @@ class _EditProfileState extends State<EditProfileView> {
                     ),
                   ),
                 ],
-              )
-              ,
+              ),
               const SizedBox(height: 20),
 
               // Editable Card - About Me
