@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ProfileHomeView(),
     AddPostScreen(),
     const Text("libraryScreen"),
-    SettingsView()
+    SettingsView(),
   ];
 
   void _onItemTapped(int index) {

@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import '../Models/Post.dart';
 
 class HomeController {
-  final String apiUrl = "http://192.168.1.129:3000/post"; // URL de l'API backend
+  final String apiUrl = "http://192.168.1.162:3000/post"; // URL de l'API backend
 
   // Méthode pour récupérer tous les posts
     Future<List<Post>> fetchVideos() async {
