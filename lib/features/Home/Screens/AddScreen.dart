@@ -44,6 +44,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: 27.0), // Espacement en haut de la page
+
             const Row(
               children: [
                 CircleAvatar(
