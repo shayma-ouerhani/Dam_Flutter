@@ -65,11 +65,11 @@ class _EditProfileState extends State<EditProfileView> {
       String userId = "674cabd54603d2eeb31c56e3"; // Replace with the actual user ID
       Map<String, dynamic> profileData = {
         "name": _firstNameController.text,
-        "lastname": _lastNameController.text,
-        "email": _emailController.text,
-        "phoneNumber": _phoneNumberController.text,
-        "domaine": _domainController.text,  // Add domain
-        "website": _githubController.text,  // Add GitHub
+        // "lastname": _lastNameController.text,
+        // "email": _emailController.text,
+        // "phoneNumber": _phoneNumberController.text,
+        // "domaine": _domainController.text,  // Add domain
+        // "website": _githubController.text,  // Add GitHub
       };
 
       // Call the API
