@@ -1,22 +1,278 @@
-// ignore_for_file: prefer_const_constructors
+// // ignore_for_file: prefer_const_constructors
 
+// import 'package:damdleaders_flutter/Controllers/HomeController.dart';
+// import 'package:damdleaders_flutter/Models/Post.dart';
+// import 'package:damdleaders_flutter/features/Home/Screens/EditProfileView.dart';
+// import 'package:flutter/material.dart';
+
+
+// class ProfileHomeView extends StatefulWidget {
+//   const ProfileHomeView({super.key});
+
+//   @override
+//   _ProfileHomeViewState createState() => _ProfileHomeViewState();
+// }
+
+// class _ProfileHomeViewState extends State<ProfileHomeView> {
+//   final HomeController postService = HomeController();
+//   late Future<List<Post>> mesPosts;
+
+//   @override
+// void initState() {
+//   super.initState();
+
+//   // Start fetching posts
+//   mesPosts = postService.fetchMyPosts("674cabd54603d2eeb31c56e3");
+//   print("----------------------mesPosts-------------------------------");
+
+//   // Add a listener to log the resolved value when the Future completes
+//   mesPosts.then((posts) {
+//     print("mes postes: ${posts.length} posts fetched successfully.");
+//     for (var post in posts) {
+//       print("Post: ${post.title}, Description: ${post.content}");
+//     }
+//     print("-----------------------------------------------------");
+//   }).catchError((error) {
+//     print("Error fetching posts: $error");
+//   });
+
+//   print("Future initialized: $mesPosts");
+//   print("----------------------END-------------------------------");
+// }
+
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return SafeArea(
+//       child: Scaffold(
+//         body: SingleChildScrollView( // Added to make the screen scrollable
+//           child: Column(
+//             children: [
+//               const SizedBox(height: 20),
+//               Row(
+//                 mainAxisSize: MainAxisSize.min, // Ensure the Row takes minimal space
+//                 mainAxisAlignment: MainAxisAlignment.center, // Center the contents of the Row
+//                 children: [
+//                   const Text(
+//                     "Yassine Ajbouni",
+//                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+//                   ),
+//                   IconButton(
+//                     icon: const Icon(Icons.keyboard_arrow_down),
+//                     onPressed: () {
+//                       // Action for the icon button
+//                     },
+//                   ),
+//                 ],
+//               ),
+//               const SizedBox(height: 20),
+//               const Row(
+//                 mainAxisSize: MainAxisSize.min, // Ensure the Row takes minimal space
+//                 mainAxisAlignment: MainAxisAlignment.center, // Center the contents of the Row
+//                 children: [
+//                   Column(
+//                     children: [
+//                       Text(
+//                         "100K",
+//                         style: TextStyle(
+//                           fontWeight: FontWeight.bold,
+//                           fontSize: 18,
+//                         ),
+//                       ),
+//                       Text("Followers"),
+//                     ],
+//                   ),
+//                   SizedBox(width: 15),
+//                   CircleAvatar(
+//                     radius: 35,
+//                     backgroundImage: AssetImage('assets/yassineImage.jpg'),
+//                   ),
+//                   SizedBox(width: 15),
+//                   Column(
+//                     children: [
+//                       Text(
+//                         "23.5K",
+//                         style: TextStyle(
+//                           fontWeight: FontWeight.bold,
+//                           fontSize: 18,
+//                         ),
+//                       ),
+//                       Text("Following"),
+//                     ],
+//                   ),
+//                 ],
+//               ),
+//               const Divider(),
+//               const Row(
+//                 mainAxisSize: MainAxisSize.min, // Ensure the Row takes minimal space
+//                 mainAxisAlignment: MainAxisAlignment.center, // Center the contents of the Row
+//                 children: [
+//                   Text(
+//                     "Yassine Ajbouni",
+//                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+//                   ),
+//                   SizedBox(width: 8),
+//                   SizedBox(
+//                     height: 20, // Set height for the VerticalDivider
+//                     child: VerticalDivider(
+//                       width: 20, // Space between the text and the icon
+//                       thickness: 1, // Thickness of the divider
+//                       color: Color.fromARGB(255, 14, 13, 13), // Color of the divider
+//                     ),
+//                   ),
+//                   Text(
+//                     "Flutter Developer",
+//                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+//                   ),
+//                 ],
+//               ),
+
+//               const SizedBox(height: 20),
+//               Row(
+//                 mainAxisSize: MainAxisSize.min, // Ensure the Row takes minimal space
+//                 mainAxisAlignment: MainAxisAlignment.center, // Center the contents of the Row
+//                 children: [
+//                   const Text("Follow Me @YassineAjbouni"),
+//                   IconButton(
+//                     icon: const Icon(
+//                       Icons.edit,
+//                       size: 16,
+//                       color: Colors.yellow,
+//                     ),
+//                     onPressed: () {
+//                       Navigator.push(
+//                           context,
+//                           MaterialPageRoute(
+//                               //builder: (context) => ListeCondidat()),
+//                               builder: (context) => EditProfileView()),
+//                         );
+//                       // EditProfileView();
+//                     },
+//                     tooltip: 'Edit', // Optional: Tooltip when the user hovers or long-presses
+//                   ),
+//                 ],
+//               ),
+//               const SizedBox(height: 5),
+//               DefaultTabController(
+//                 length: 2, // Number of tabs
+//                 child: Column(
+//                   children: [
+//                     const TabBar(
+//                       indicatorColor: Colors.blue,
+//                       labelColor: Colors.black,
+//                       unselectedLabelColor: Colors.grey,
+//                       tabs: [
+//                         Tab(text: "Posts"),
+//                         Tab(text: "Survey"),
+//                       ],
+//                     ),
+//                     SizedBox(
+//                       height: MediaQuery.of(context).size.height * 0.6,
+//                       child: TabBarView(
+//   children: [
+//     // Posts Tab
+//     ListView.builder(
+//       itemCount: 5, // Replace with dynamic count if necessary
+//       itemBuilder: (context, index) {
+//         return GestureDetector(
+//           onTap: () {
+//             Navigator.push(
+//               context,
+//               MaterialPageRoute(
+//                 builder: (context) => CandidatesListScreen(postIndex: index + 1),
+//               ),
+//             );
+//           },
+//           child: Card(
+//             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+//             child: Padding(
+//               padding: const EdgeInsets.all(16.0),
+//               child: Column(
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 children: [
+//                   Row(
+//                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                     children: [
+//                       Text(
+//                         "Post ${index + 1}",
+//                         style: const TextStyle(
+//                           fontSize: 18,
+//                           fontWeight: FontWeight.bold,
+//                         ),
+//                       ),
+//                       const Icon(Icons.keyboard_arrow_right, color: Colors.deepOrange),
+//                     ],
+//                   ),
+//                   const SizedBox(height: 8),
+//                   Text(
+//                     "Date: ${DateTime.now().toLocal()}",
+//                     style: const TextStyle(color: Colors.grey),
+//                   ),
+//                   const SizedBox(height: 8),
+//                   const Text(
+//                     "Description of the post goes here. This is a placeholder for the post content.",
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ),
+//         );
+//       },
+//     ),
+//     // Survey Tab
+//     const SurveyWidget(), // Add a new SurveyWidget here
+//   ],
+// ),
+
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//               //const SizedBox(height: 80),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+
+import 'package:damdleaders_flutter/Controllers/HomeController.dart';
+import 'package:damdleaders_flutter/Models/Post.dart';
 import 'package:damdleaders_flutter/features/Home/Screens/EditProfileView.dart';
 import 'package:flutter/material.dart';
 
-class ProfileHomeView extends StatelessWidget {
+class ProfileHomeView extends StatefulWidget {
   const ProfileHomeView({super.key});
+
+  @override
+  _ProfileHomeViewState createState() => _ProfileHomeViewState();
+}
+
+class _ProfileHomeViewState extends State<ProfileHomeView> {
+  final HomeController postService = HomeController();
+
+  late Future<List<Post>> mesPosts;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the Future
+    mesPosts = postService.fetchMyPosts("674cabd54603d2eeb31c56e3");
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: SingleChildScrollView( // Added to make the screen scrollable
+        body: SingleChildScrollView(
           child: Column(
             children: [
               const SizedBox(height: 20),
               Row(
-                mainAxisSize: MainAxisSize.min, // Ensure the Row takes minimal space
-                mainAxisAlignment: MainAxisAlignment.center, // Center the contents of the Row
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
                     "Yassine Ajbouni",
@@ -32,8 +288,8 @@ class ProfileHomeView extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               const Row(
-                mainAxisSize: MainAxisSize.min, // Ensure the Row takes minimal space
-                mainAxisAlignment: MainAxisAlignment.center, // Center the contents of the Row
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Column(
                     children: [
@@ -69,8 +325,8 @@ class ProfileHomeView extends StatelessWidget {
               ),
               const Divider(),
               const Row(
-                mainAxisSize: MainAxisSize.min, // Ensure the Row takes minimal space
-                mainAxisAlignment: MainAxisAlignment.center, // Center the contents of the Row
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     "Yassine Ajbouni",
@@ -78,11 +334,11 @@ class ProfileHomeView extends StatelessWidget {
                   ),
                   SizedBox(width: 8),
                   SizedBox(
-                    height: 20, // Set height for the VerticalDivider
+                    height: 20,
                     child: VerticalDivider(
-                      width: 20, // Space between the text and the icon
-                      thickness: 1, // Thickness of the divider
-                      color: Color.fromARGB(255, 14, 13, 13), // Color of the divider
+                      width: 20,
+                      thickness: 1,
+                      color: Color.fromARGB(255, 14, 13, 13),
                     ),
                   ),
                   Text(
@@ -91,11 +347,10 @@ class ProfileHomeView extends StatelessWidget {
                   ),
                 ],
               ),
-
               const SizedBox(height: 20),
               Row(
-                mainAxisSize: MainAxisSize.min, // Ensure the Row takes minimal space
-                mainAxisAlignment: MainAxisAlignment.center, // Center the contents of the Row
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text("Follow Me @YassineAjbouni"),
                   IconButton(
@@ -106,20 +361,19 @@ class ProfileHomeView extends StatelessWidget {
                     ),
                     onPressed: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              //builder: (context) => ListeCondidat()),
-                              builder: (context) => EditProfileView()),
-                        );
-                      // EditProfileView();
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EditProfileView(),
+                        ),
+                      );
                     },
-                    tooltip: 'Edit', // Optional: Tooltip when the user hovers or long-presses
+                    tooltip: 'Edit',
                   ),
                 ],
               ),
               const SizedBox(height: 5),
               DefaultTabController(
-                length: 2, // Number of tabs
+                length: 2,
                 child: Column(
                   children: [
                     const TabBar(
@@ -133,128 +387,83 @@ class ProfileHomeView extends StatelessWidget {
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.6,
-                      child:/* TabBarView(
+                      child: TabBarView(
                         children: [
-                          // // Posts Tab
-                          ListView.builder(
-                            itemCount: 5, // Replace with dynamic count if necessary
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  // Navigate to a new screen with the candidates list
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => CandidatesListScreen(postIndex: index + 1),
-                                    ),
-                                  );
-                                },
-                                child: Card(
-                                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "Post ${index + 1}",
-                                              style: const TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold,
+                          // Posts Tab
+                          FutureBuilder<List<Post>>(
+                            future: mesPosts,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return const Center(child: CircularProgressIndicator());
+                              } else if (snapshot.hasError) {
+                                return Center(child: Text("Error: ${snapshot.error}"));
+                              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                                return const Center(child: Text("No posts available"));
+                              } else {
+                                // Display posts when data is available
+                                final posts = snapshot.data!;
+                                return ListView.builder(
+                                  itemCount: posts.length,
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        // Navigate to candidates list screen or detail screen
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => CandidatesListScreen(postIndex: index, postTitle: posts[index].title ?? "No Title"),
+                                          ),
+                                        );
+
+                                      },
+                                      child: Card(
+                                        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    //"Post ${index + 1}",
+                                                    posts[index].title ?? "No Title",
+                                                    style: const TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  const Icon(Icons.keyboard_arrow_right, color: Colors.deepOrange),
+                                                ],
                                               ),
-                                            ),
-                                            const Icon(Icons.keyboard_arrow_right,color: Colors.deepOrange,),
-                                          ],
+                                              const SizedBox(height: 8),
+                                              Text(
+                                                "Date: ${DateTime.now().toLocal()}",
+                                                style: const TextStyle(color: Colors.grey),
+                                              ),
+                                              const SizedBox(height: 8),
+                                              Text(
+                                                posts[index].content ?? "No description",
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                        const SizedBox(height: 8),
-                                        Text(
-                                          "Date: ${DateTime.now().toLocal()}",
-                                          style: const TextStyle(color: Colors.grey),
-                                        ),
-                                        const SizedBox(height: 8),
-                                        const Text(
-                                          "Description of the post goes here. This is a placeholder for the post content.",
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
+                                      ),
+                                    );
+                                  },
+                                );
+                              }
                             },
                           ),
-                          // Favorites Tab
-                          const Center(
-                            child: Text(
-                              "No favorites available",
-                              style: TextStyle(color: Colors.grey, fontSize: 16),
-                            ),
-                          ),
+                          // Survey Tab
+                          const SurveyWidget(),
                         ],
-                      ),*/
-                      TabBarView(
-  children: [
-    // Posts Tab
-    ListView.builder(
-      itemCount: 5, // Replace with dynamic count if necessary
-      itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CandidatesListScreen(postIndex: index + 1),
-              ),
-            );
-          },
-          child: Card(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Post ${index + 1}",
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
                       ),
-                      const Icon(Icons.keyboard_arrow_right, color: Colors.deepOrange),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    "Date: ${DateTime.now().toLocal()}",
-                    style: const TextStyle(color: Colors.grey),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    "Description of the post goes here. This is a placeholder for the post content.",
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    ),
-    // Survey Tab
-    const SurveyWidget(), // Add a new SurveyWidget here
-  ],
-),
-
                     ),
                   ],
                 ),
               ),
-              //const SizedBox(height: 80),
             ],
           ),
         ),
@@ -270,12 +479,11 @@ class ProfileHomeView extends StatelessWidget {
 
 
 
-
-
 class CandidatesListScreen extends StatelessWidget {
-  final int postIndex;
+  final int postIndex; // Accept postIndex as a parameter
+  final String postTitle; // Accept postTitle as a parameter
 
-  const CandidatesListScreen({Key? key, required this.postIndex}) : super(key: key);
+  const CandidatesListScreen({Key? key, required this.postIndex, required this.postTitle}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -304,7 +512,7 @@ final List<Map<String, String>> candidates = [
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Candidates for Post $postIndex"),
+        title: Text("Candidates for $postTitle"),
       ),
       body: ListView.builder(
         itemCount: candidates.length,
