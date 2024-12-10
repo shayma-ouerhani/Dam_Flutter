@@ -47,4 +47,6 @@ class Post {
       videoUrl: json['videoUrl'],
     );
   }
+
+  toJson() {}
 }
