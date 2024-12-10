@@ -9,7 +9,6 @@ class SettingsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.grey[200],
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -32,9 +31,7 @@ class SettingsView extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 50,
-                      backgroundImage: NetworkImage(
-                        'https://res.cloudinary.com/dcjtuxprn/image/upload/v1733151304/UploadLeaders/image.jpg', // Replace with the user's profile picture URL
-                      ),
+                      backgroundImage: AssetImage('assets/yassineImage.jpg') as ImageProvider,
                     ),
                     SizedBox(height: 10),
                     Text(
@@ -66,89 +63,214 @@ class SettingsView extends StatelessWidget {
               ),
               const SizedBox(height: 20),
 
-              const Divider(),
+              //const Divider(),
               // Dark Mode Toggle
-              ListTile(
-                leading: const Icon(Icons.dark_mode),
-                title: const Text('Dark mode'),
-                trailing: Switch(
-                  value: false,
-                  onChanged: (bool value) {
-                    // Handle dark mode toggle
-                  },
-                ),
-              ),
-              const Divider(),
+              // ListTile(
+              //   leading: const Icon(Icons.dark_mode),
+              //   title: const Text('Dark mode'),
+              //   trailing: Switch(
+              //     value: false,
+              //     onChanged: (bool value) {
+              //       // Handle dark mode toggle
+              //     },
+              //   ),
+              // ),
+              Card(
+  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+  child: Padding(
+    padding: const EdgeInsets.all(16.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const Row(
+          children: [
+            Icon(
+              Icons.dark_mode,
+              size: 24.0,
+              color: Color.fromARGB(255, 85, 85, 85),
+            ),
+            SizedBox(width: 8),
+            Text(
+              'Dark mode',
+              style: TextStyle(fontSize: 18),
+            ),
+          ],
+        ),
+        Switch(
+          value: false,
+          onChanged: (bool value) {
+            // Handle dark mode toggle
+          },
+        ),
+      ],
+    ),
+  ),
+),
+
+              //const Divider(),
 
               // Password Option
-              ListTile(
+              /*ListTile(
                 leading: const Icon(Icons.lock),
                 title: const Text('Password'),
                 trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   _showEditPasswordDialog(context);
-                // Show password change popup
-                // showDialog(
-                //   context: context,
-                //   builder: (BuildContext context) {
-                //     return PasswordChangeDialog();
-                //   },
-                // );
               },
+              ),*/
+              Card(
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Row(
+                        children: [
+                          Icon(
+                            Icons.lock,
+                            size: 24.0,
+                            color: Color.fromARGB(255, 85, 85, 85),
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            'Password',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ],
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.arrow_forward_ios),
+                        onPressed: () {
+                          _showEditPasswordDialog(context);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              const Divider(),
+
+              //const Divider(),
+              Card(
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Row(
+                        children: [
+                          Icon(
+                            Icons.logout,
+                            size: 24.0,
+                            color: Color.fromARGB(255, 85, 85, 85),
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            'Logout',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ],
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.arrow_forward_ios),
+                        onPressed: () {
+                          // Show confirmation dialog
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('Confirm Logout'),
+                                content: const Text('Are you sure you want to logout?'),
+                                actions: [
+                                  Row(
+                                    children: [
+                                      TextButton(
+                                        onPressed: () {
+                                          // Close the dialog
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text(
+                                          'Cancel',
+                                          style: TextStyle(color: Colors.grey),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 55),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          // Handle the logout logic here
+                                          Navigator.of(context).pop(); // Close the dialog
+                                          // Add your logout logic
+                                        },
+                                        child: const Text(
+                                          'Logout',
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
 
               // Logout Option
-              ListTile(
-                leading: const Icon(Icons.logout),
-                title: const Text('Logout'),
-                trailing: const Icon(Icons.arrow_forward_ios),
-                onTap: () {
-                  // Show confirmation dialog
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('Confirm Logout'),
-                        content: const Text('Are you sure you want to logout?'),
-                        actions: [
-                          Row(
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  // Close the dialog
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text(
-                                  'Cancel',
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                              ),
-                              const SizedBox(width: 55,),
-                              ElevatedButton(
-                                onPressed: () {
-                                  // Handle the logout logic here
-                                  Navigator.of(context).pop(); // Close the dialog
-                                  // Add your logout logic
-                                },
-                                // style: ElevatedButton.styleFrom(
-                                //   backgroundColor: Colors.red, // Customize button color
-                                // ),
-                                child: const Text('Logout',
-                                style: TextStyle(color: Colors.red),
-                                ),
-                              ),
-                            ],
-                          ),
+              // ListTile(
+              //   leading: const Icon(Icons.logout),
+              //   title: const Text('Logout'),
+              //   trailing: const Icon(Icons.arrow_forward_ios),
+              //   onTap: () {
+              //     // Show confirmation dialog
+              //     showDialog(
+              //       context: context,
+              //       builder: (BuildContext context) {
+              //         return AlertDialog(
+              //           title: const Text('Confirm Logout'),
+              //           content: const Text('Are you sure you want to logout?'),
+              //           actions: [
+              //             Row(
+              //               children: [
+              //                 TextButton(
+              //                   onPressed: () {
+              //                     // Close the dialog
+              //                     Navigator.of(context).pop();
+              //                   },
+              //                   child: const Text(
+              //                     'Cancel',
+              //                     style: TextStyle(color: Colors.grey),
+              //                   ),
+              //                 ),
+              //                 const SizedBox(width: 55,),
+              //                 ElevatedButton(
+              //                   onPressed: () {
+              //                     // Handle the logout logic here
+              //                     Navigator.of(context).pop(); // Close the dialog
+              //                     // Add your logout logic
+              //                   },
+              //                   // style: ElevatedButton.styleFrom(
+              //                   //   backgroundColor: Colors.red, // Customize button color
+              //                   // ),
+              //                   child: const Text('Logout',
+              //                   style: TextStyle(color: Colors.red),
+              //                   ),
+              //                 ),
+              //               ],
+              //             ),
                           
-                        ],
-                      );
-                    },
-                  );
-                },
-              ),
+              //           ],
+              //         );
+              //       },
+              //     );
+              //   },
+              // ),
 
-              const Divider(),
+              //const Divider(),
             ],
           ),
         ),
@@ -288,131 +410,3 @@ void _showEditPasswordDialog(BuildContext context) {
   );
 }
 
-
-// class PasswordChangeDialog extends StatefulWidget {
-//   @override
-//   _PasswordChangeDialogState createState() => _PasswordChangeDialogState();
-// }
-
-// class _PasswordChangeDialogState extends State<PasswordChangeDialog> {
-//   final TextEditingController _passwordController = TextEditingController();
-//   final TextEditingController _newPasswordController = TextEditingController();
-//   final TextEditingController _confirmPasswordController = TextEditingController();
-
-//   bool _isCurrentPasswordVisible = false;
-//   bool _isNewPasswordVisible = false;
-//   bool _isConfirmPasswordVisible = false;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Dialog(
-//       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-//       child: Padding(
-//         padding: const EdgeInsets.all(20),
-//         child: Column(
-//           mainAxisSize: MainAxisSize.min,
-//           children: [
-//             const Text(
-//               'Update Password',
-//               style: TextStyle(
-//                 fontSize: 18,
-//                 fontWeight: FontWeight.bold,
-//               ),
-//             ),
-//             const SizedBox(height: 20),
-
-//             // Current Password Field
-//             TextField(
-//               controller: _passwordController,
-//               obscureText: !_isCurrentPasswordVisible,
-//               decoration: InputDecoration(
-//                 labelText: 'Password',
-//                 suffixIcon: IconButton(
-//                   icon: Icon(
-//                     _isCurrentPasswordVisible ? Icons.visibility : Icons.visibility_off,
-//                   ),
-//                   onPressed: () {
-//                     setState(() {
-//                       _isCurrentPasswordVisible = !_isCurrentPasswordVisible;
-//                     });
-//                   },
-//                 ),
-//                 border: OutlineInputBorder(
-//                   borderRadius: BorderRadius.circular(10),
-//                 ),
-//               ),
-//             ),
-//             const SizedBox(height: 15),
-
-//             // New Password Field
-//             TextField(
-//               controller: _newPasswordController,
-//               obscureText: !_isNewPasswordVisible,
-//               decoration: InputDecoration(
-//                 labelText: 'New Password',
-//                 suffixIcon: IconButton(
-//                   icon: Icon(
-//                     _isNewPasswordVisible ? Icons.visibility : Icons.visibility_off,
-//                   ),
-//                   onPressed: () {
-//                     setState(() {
-//                       _isNewPasswordVisible = !_isNewPasswordVisible;
-//                     });
-//                   },
-//                 ),
-//                 border: OutlineInputBorder(
-//                   borderRadius: BorderRadius.circular(10),
-//                 ),
-//               ),
-//             ),
-//             const SizedBox(height: 15),
-
-//             // Confirm Password Field
-//             TextField(
-//               controller: _confirmPasswordController,
-//               obscureText: !_isConfirmPasswordVisible,
-//               decoration: InputDecoration(
-//                 labelText: 'Confirm Password',
-//                 suffixIcon: IconButton(
-//                   icon: Icon(
-//                     _isConfirmPasswordVisible ? Icons.visibility : Icons.visibility_off,
-//                   ),
-//                   onPressed: () {
-//                     setState(() {
-//                       _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
-//                     });
-//                   },
-//                 ),
-//                 border: OutlineInputBorder(
-//                   borderRadius: BorderRadius.circular(10),
-//                 ),
-//               ),
-//             ),
-//             const SizedBox(height: 20),
-
-//             // Confirm Button
-//             ElevatedButton(
-//               onPressed: () {
-//                 // Handle password update logic
-//               },
-//               style: ElevatedButton.styleFrom(
-//                 backgroundColor: const Color(0xFF4A148C), // Matches your design
-//                 padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
-//                 shape: RoundedRectangleBorder(
-//                   borderRadius: BorderRadius.circular(10),
-//                 ),
-//               ),
-//               child: const Text(
-//                 'CONFIRM',
-//                 style: TextStyle(
-//                   fontSize: 16,
-//                   color: Colors.white, // Ensure the text is white
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

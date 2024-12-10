@@ -14,8 +14,8 @@ class LoginResponse {
   String website;
   String photoUrl;
   String userId;
-  List<Post> posts;
-  int statusCode;
+  // List<Post> posts;
+  num statusCode;
 
   LoginResponse({
     required this.accessToken,
@@ -29,7 +29,7 @@ class LoginResponse {
     required this.website,
     required this.photoUrl,
     required this.userId,
-    required this.posts,
+    // required this.posts,
     required this.statusCode,
   });
 
@@ -47,11 +47,11 @@ class LoginResponse {
       website: json['website'] ?? '',
       photoUrl: json['photoUrl'] ?? '',
       userId: json['userId'] ?? '',
-      posts: (json['posts'] as List<dynamic>?)
-          ?.map((e) => Post.fromJson(e as Map<String, dynamic>))
-          .toList() ??
-          [],
-      statusCode: json['statusCode'] != null ? json['statusCode'] as int : 200,  // Gestion de la nullité ici
+      // posts: (json['posts'] as List<dynamic>?)
+      //     ?.map((e) => Post.fromJson(e as Map<String, dynamic>))
+      //     .toList() ??
+      //     [],
+      statusCode: json['statusCode'] ?? 0,  // Gestion de la nullité ici
     );
   }
 
@@ -69,9 +69,10 @@ class LoginResponse {
       'codePostal': codePostal,
       'website': website,
       'photoUrl': photoUrl,
-      'statusCode': statusCode,
+      // 'statusCode': statusCode,
       'userId': userId,
-      'posts': posts.map((e) => e.toJson()).toList(),
+      // 'posts': posts.map((e) => e.toJson()).toList(),
+      'statusCode': statusCode,
     };
   }
 }

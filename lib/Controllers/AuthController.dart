@@ -3,10 +3,10 @@ import 'package:http/http.dart' as http;
 import '../Models/Auth/LoginResponse.dart';
 
 class AuthController {
-  final String apiUrl = "http://192.168.1.129:3000/auth/login"; // URL de l'API backend pour la connexion
+  final String apiUrl = "http://172.16.11.169:3000/auth/login"; // URL de l'API backend pour la connexion
 
   /// Fonction pour effectuer une connexion
-  Future<LoginResponse?> login(String email, String password) async {
+   login(String email, String password) async {
     try {
       // Corps de la requête
       Map<String, String> body = {
@@ -20,16 +20,20 @@ class AuthController {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(body),
       );
+      print("we are in this step");
 
       // Vérification du code de réponse
       if (response.statusCode == 201) {  // Vérification pour le code 201 (création réussie)
         // Décodage de la réponse en JSON
+
         final jsonResponse = jsonDecode(response.body);
+        print("we are in this step11yg(yy ${jsonResponse}");
         // Conversion de la réponse JSON en objet LoginResponse
         return LoginResponse.fromJson(jsonResponse);
+
       } else {
         print('Erreur lors de la connexion: ${response.statusCode} - ${response.body}');
-        return null;
+        return response;
       }
     } catch (e) {
       print('Exception lors de la connexion: $e');

@@ -33,64 +33,84 @@ class _EditProfileState extends State<EditProfileView> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.grey[200],
         body: SingleChildScrollView(
           child: Column(
             children: [
-              // Profile Header with Photo Picker
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(16.0),
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Color.fromARGB(0, 51, 32, 133), Color.fromARGB(255, 39, 14, 108)],                    
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+              Stack(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(16.0),
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Color(0xFF301060), Colors.black],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: _pickImage,
+                          child: CircleAvatar(
+                            radius: 50,
+                            backgroundImage: _selectedImage != null
+                                ? FileImage(_selectedImage!)
+                                : const AssetImage('assets/yassineImage.jpg') as ImageProvider,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        const Text(
+                          'Yassine Ajbouni',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        const Text(
+                          'Yassine.Ajbouni@esprit.tn',
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        const Text(
+                          'Tunisia, Tunis',
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
+                  Positioned(
+                    top: 16,
+                    left: 16,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop(); // Navigate back
+                      },
+                      child: const CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Colors.black45,
+                        child: Icon(
+                          Icons.arrow_back,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: _pickImage,
-                      child: CircleAvatar(
-                        radius: 50,
-                        backgroundImage: _selectedImage != null
-                            ? FileImage(_selectedImage!)
-                            : const AssetImage('assets/yassineImage.jpg') as ImageProvider,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      'Yassine Ajbouni',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    const Text(
-                      'Yassine.Ajbouni@esprit.tn',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 16,
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    const Text(
-                      'Tunisia, Tunis',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                ],
+              )
+              ,
               const SizedBox(height: 20),
 
               // Editable Card - About Me
@@ -107,7 +127,7 @@ class _EditProfileState extends State<EditProfileView> {
                           const Row(
                             children: [
                               const Icon(
-                                Icons.info,
+                                Icons.person,
                                 size: 24.0,
                                 color: Colors.deepOrange,
                               ),
@@ -183,7 +203,7 @@ class _EditProfileState extends State<EditProfileView> {
                           const Row(
                             children: [
                               const Icon(
-                                Icons.info,
+                                Icons.school,
                                 size: 24.0,
                                 color: Colors.deepOrange,
                               ),
@@ -241,7 +261,7 @@ class _EditProfileState extends State<EditProfileView> {
                           const Row(
                             children: [
                               const Icon(
-                                Icons.info,
+                                Icons.description,
                                 size: 24.0,
                                 color: Colors.deepOrange,
                               ),
@@ -332,7 +352,7 @@ class _EditProfileState extends State<EditProfileView> {
                   });
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.deepPurple,
+                  backgroundColor: const Color.fromARGB(255, 48, 0, 131),
                   minimumSize: const Size(300, 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
