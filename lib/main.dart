@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return MaterialApp(
-      debugShowCheckedModeBanner: false, // Supprime la bannière "Debug"
+      debugShowCheckedModeBanner: false, 
       title: 'Flutter Demo',
       theme: ThemeData.light(), // Thème clair par défaut
       darkTheme: ThemeData.dark(), // Thème sombre par défaut
