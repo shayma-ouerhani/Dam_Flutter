@@ -20,7 +20,7 @@ class AuthController {
 
       // Envoi de la requête POST
       final response = await http.post(
-        Uri.parse(apiUrl),
+        Uri.parse(loginUrl),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(body),
       );
@@ -44,8 +44,6 @@ class AuthController {
       return null;
     }
   }
-}
-
 
   /// Fonction pour effectuer un enregistrement
   Future<RegisterResponse?> register(String email, String password, String name, String lastname, String phoneNumber, String codePostal, String website) async {
@@ -85,3 +83,5 @@ class AuthController {
     }
   }
 }
+
+

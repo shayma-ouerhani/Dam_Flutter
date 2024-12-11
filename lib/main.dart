@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:   LoginScreen(), // Définit WelcomeScreen comme écran d'accueil
+      home:   HomeScreen(), // Définit WelcomeScreen comme écran d'accueil
     );
   }
 }

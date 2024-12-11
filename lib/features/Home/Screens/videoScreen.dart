@@ -388,12 +388,15 @@ class _VideoScreenState extends State<VideoScreen> {
                                       ),
                                       SizedBox(height: 5),
                                       Text(
-                                        posts[index].content, // Dynamique: légende de la vidéo
+                                        posts[index].content.length > 50
+                                            ? posts[index].content.substring(0, 50) + '...' // Troncature avec "..."
+                                            : posts[index].content, // Affichage complet si inférieur à 50 caractères
                                         style: TextStyle(
                                           fontSize: 15,
                                           color: Colors.white,
                                         ),
                                       ),
+
                                       SizedBox(height: 5),
                                       Row(
                                         children: [
