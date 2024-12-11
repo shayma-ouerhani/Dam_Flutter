@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light(), // Thème clair par défaut
       darkTheme: ThemeData.dark(), // Thème sombre par défaut
       themeMode: themeProvider.themeMode, // Thème géré dynamiquement
-      home: LoginScreen(), // Définit HomeScreen comme écran d'accueil
+      home: WelcomeScreen(), // Définit HomeScreen comme écran d'accueil
     );
   }
 }
