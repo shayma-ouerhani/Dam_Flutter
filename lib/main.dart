@@ -1,3 +1,4 @@
+import 'package:damdleaders_flutter/features/auth/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart'; // Nécessaire pour Provider
 import 'package:shared_preferences/shared_preferences.dart'; // Nécessaire pour enregistrer les préférences
@@ -37,12 +38,12 @@ class MyApp extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return MaterialApp(
-      debugShowCheckedModeBanner: false, 
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData.light(), // Thème clair par défaut
       darkTheme: ThemeData.dark(), // Thème sombre par défaut
       themeMode: themeProvider.themeMode, // Thème géré dynamiquement
-      home: HomeScreen(), // Définit HomeScreen comme écran d'accueil
+      home: LoginScreen(), // Définit HomeScreen comme écran d'accueil
     );
   }
 }

@@ -38,108 +38,108 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Row(
-                children: [
-                  CircleAvatar(
-                    radius: 25,
-                    backgroundImage: NetworkImage(
-                        "https://res.cloudinary.com/dcjtuxprn/image/upload/v1733872892/UploadLeaders/Messenger_creation_CE9410BB-0794-4261-88AC-60CD8F180A91.jpg"), // Remplace par l'image de l'utilisateur
-                  ),
-                  SizedBox(width: 10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Yassine Ajbouni",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 27.0), // Espacement en haut de la page
+
+            const Row(
+              children: [
+                CircleAvatar(
+                  radius: 25,
+                  backgroundImage: NetworkImage(
+                      "https://res.cloudinary.com/dcjtuxprn/image/upload/v1732755984/UploadLeaders/1000014203.jpg"), // Remplace par l'image de l'utilisateur
+                ),
+                SizedBox(width: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "yesser khaloui",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
                       ),
-                      Text(
-                        "Flutter Developer",
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ],
+                    ),
+                    Text(
+                      "software developer",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              "Post title",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: "Enter title here",
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              "Description",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: "Enter description here",
+              ),
+              maxLines: 4,
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                IconButton(
+                  icon: const Icon(
+                    Icons.video_library,
+                    color: Color(0xFFFF9228),
                   ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                "Post title",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              const TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "Enter title here",
+                  onPressed: _pickVideo, // Appel correct de la fonction
+                ),
+                const Text("Add a video"),
+              ],
+            ),
+            if (_selectedVideo != null) // Affiche une vidéo si sélectionnée
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: SizedBox(
+                  height: 200,
+                  child: Center(
+                    child: Text(
+                      "Video selected: ${_selectedVideo!.path.split('/').last}",
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ),
                 ),
               ),
-              const SizedBox(height: 20),
-              const Text(
-                "Description",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              const TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "Enter description here",
-                ),
-                maxLines: 4,
-              ),
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(
-                      Icons.video_library,
+            const Spacer(),
+            Row(
+              children: [
+                Spacer(), // Espace pour décaler à droite
+                TextButton(
+                  onPressed: () {
+                    // Action du bouton "Post" sans arrière-plan
+                  },
+                  child: Text(
+                    "Post",
+                    style: TextStyle(
+                      fontSize: 18,
                       color: Color(0xFFFF9228),
                     ),
-                    onPressed: _pickVideo, // Appel correct de la fonction
-                  ),
-                  const Text("Add a video"),
-                ],
-              ),
-              if (_selectedVideo != null) // Affiche une vidéo si sélectionnée
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: SizedBox(
-                    height: 200,
-                    child: Center(
-                      child: Text(
-                        "Video selected: ${_selectedVideo!.path.split('/').last}",
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                    ),
                   ),
                 ),
-              const Spacer(),
-              Row(
-                children: [
-                  Spacer(), // Espace pour décaler à droite
-                  TextButton(
-                    onPressed: () {
-                      // Action du bouton "Post" sans arrière-plan
-                    },
-                    child: Text(
-                      "Post",
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Color(0xFFFF9228),
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
+              ],
+            )
+          ],
         ),
       ),
     );
