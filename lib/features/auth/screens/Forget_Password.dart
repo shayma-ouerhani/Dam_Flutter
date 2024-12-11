@@ -1,8 +1,81 @@
 import 'package:damdleaders_flutter/features/auth/screens/OTP.dart';
 import 'package:damdleaders_flutter/features/auth/screens/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert'; // Pour l'encodage JSON
+import 'package:http/http.dart' as http; // Assurez-vous que cette importation est présente
 
-class ForgetPasswordScreen extends StatelessWidget {
+class ForgetPasswordScreen extends StatefulWidget {
+  @override
+  _ForgetPasswordScreenState createState() => _ForgetPasswordScreenState();
+}
+
+class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _smsController = TextEditingController();
+  String _emailError = '';
+  String _smsError = '';
+  bool _isLoading = false;
+
+  Future<void> _handleForgotPassword() async {
+    final email = _emailController.text.trim();
+    final sms = _smsController.text.trim();
+
+    if (email.isEmpty && sms.isEmpty) {
+      setState(() {
+        _emailError = "Please enter an email or phone number.";
+        _smsError = "Please enter an email or phone number.";
+      });
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+      _emailError = '';
+      _smsError = '';
+    });
+
+    try {
+      final url = Uri.parse('http://your-backend-url.com/auth/forgot-password');
+      final response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({
+          "email": email,
+          "phoneNumber": sms,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data["statusCode"] == 200) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OtpScreen(
+                resetToken: data["resetToken"], // Paramètre ajouté ici
+                code: data["code"], // Paramètre ajouté ici
+              ),
+            ),
+          );
+        } else {
+          _showSnackbar("Failed to send OTP. Try again.");
+        }
+      } else {
+        _showSnackbar("Invalid response from server.");
+      }
+    } catch (e) {
+      _showSnackbar("An error occurred. Check your connection.");
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  void _showSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,40 +113,38 @@ class ForgetPasswordScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 40),
-                Card(
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                TextFormField(
+                  controller: _smsController,
+                  decoration: InputDecoration(
+                    labelText: "Enter your phone number",
+                    prefixIcon: Icon(Icons.call),
+                    errorText: _smsError.isEmpty ? null : _smsError,
                   ),
-                  child: const ListTile(
-                    leading: Icon(Icons.sms, color: Color(0xFF130160)),
-                    title: Text('Send OTP via SMS'),
-                    subtitle: Text('(+216) 28160626'),
-                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      _smsError = ''; // Clear error on input
+                    });
+                  },
                 ),
                 const SizedBox(height: 16),
-                Card(
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    labelText: "Enter your email",
+                    prefixIcon: Icon(Icons.mail_outline),
+                    errorText: _emailError.isEmpty ? null : _emailError,
                   ),
-                  child: const ListTile(
-                    leading: Icon(Icons.email, color: Color(0xFF130160)),
-                    title: Text('Send OTP via Email'),
-                    subtitle: Text('shayma.ouerhani@esprit.tn'),
-                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      _emailError = ''; // Clear error on input
+                    });
+                  },
                 ),
                 const SizedBox(height: 32),
                 SizedBox(
-                  width: double
-                      .infinity, // Le bouton prendra toute la largeur disponible
+                  width: double.infinity, // Le bouton prendra toute la largeur disponible
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => OtpScreen()),
-                      );
-                    },
+                    onPressed: _isLoading ? null : _handleForgotPassword,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF130160),
                       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -122,6 +193,34 @@ class ForgetPasswordScreen extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _smsController.dispose();
+    super.dispose();
+  }
+}
+
+class OtpScreen extends StatelessWidget {
+  final String resetToken;
+  final int code;
+
+  const OtpScreen({
+    Key? key,
+    required this.resetToken,
+    required this.code,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Verify OTP")),
+      body: Center(
+        child: Text("Token: $resetToken, Code: $code"),
       ),
     );
   }
