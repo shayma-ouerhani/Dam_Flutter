@@ -8,7 +8,7 @@ class AuthController {
   // URL de l'API backend pour la connexion et l'enregistrement
   final String loginUrl = "http://192.168.1.129:3000/auth/login";
   final String registerUrl = "http://192.168.1.129:3000/auth/signup";
-
+  final String api = "http://192.168.1.129:3000/auth";
   /// Fonction pour effectuer une connexion
   login(String email, String password) async {
     try {
@@ -81,6 +81,27 @@ class AuthController {
       print('Exception lors de l\'enregistrement: $e');
       return null;
     }
+  }
+  Future<Map<String, dynamic>> resetPassword(String resetToken, String newPassword) async {
+    final response = await http.put(
+      Uri.parse("$api/reset-password"),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({
+        'resetToken': resetToken,
+        'newPassword': newPassword,
+      }),
+    );
+
+    if (response.statusCode >= 200 && response.statusCode <= 299) {
+      // Si la requête réussit, retournez les données de la réponse
+      return json.decode(response.body);
+    } else {
+      // Si la requête échoue, lancez une exception
+      throw Exception('Failed to reset password');
+    }
+
   }
 }
 
