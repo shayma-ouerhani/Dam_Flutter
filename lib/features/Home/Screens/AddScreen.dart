@@ -124,12 +124,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
             const Spacer(),
             Row(
               children: [
-                Spacer(), // Espace pour décaler à droite
+                const Spacer(), // Espace pour décaler à droite
                 TextButton(
                   onPressed: () {
                     // Action du bouton "Post" sans arrière-plan
                   },
-                  child: Text(
+                  child: const Text(
                     "Post",
                     style: TextStyle(
                       fontSize: 18,
