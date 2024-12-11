@@ -314,75 +314,75 @@ class _EditProfileState extends State<EditProfileView> {
               ),
 
               // Resume Card
-              Card(
-                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Row(
-                            children: [
-                              Icon(
-                                Icons.description,
-                                size: 24.0,
-                                color: Colors.deepOrange,
-                              ),
-                              SizedBox(width: 8),
-                              Text(
-                                'Resume',
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              _isEditingResume ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _isEditingResume = !_isEditingResume;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      if (_isEditingResume) ...[
-                        const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: Colors.white,
-                                ),
-                                child: Text(
-                                  _selectedPdfFile != null
-                                      ? _selectedPdfFile!.path.split('/').last
-                                      : 'No file selected',
-                                  style: const TextStyle(fontSize: 16, color: Colors.black54),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            IconButton(
-                              icon: const Icon(Icons.upload_file_rounded),
-                              onPressed: _pickPdf,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                      ]
-                    ],
-                  ),
-                ),
-              ),
+              // Card(
+              //   margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              //   child: Padding(
+              //     padding: const EdgeInsets.all(16.0),
+              //     child: Column(
+              //       crossAxisAlignment: CrossAxisAlignment.start,
+              //       children: [
+              //         Row(
+              //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //           children: [
+              //             const Row(
+              //               children: [
+              //                 Icon(
+              //                   Icons.description,
+              //                   size: 24.0,
+              //                   color: Colors.deepOrange,
+              //                 ),
+              //                 SizedBox(width: 8),
+              //                 Text(
+              //                   'Resume',
+              //                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              //                 ),
+              //               ],
+              //             ),
+              //             IconButton(
+              //               icon: Icon(
+              //                 _isEditingResume ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+              //               ),
+              //               onPressed: () {
+              //                 setState(() {
+              //                   _isEditingResume = !_isEditingResume;
+              //                 });
+              //               },
+              //             ),
+              //           ],
+              //         ),
+              //         if (_isEditingResume) ...[
+              //           const SizedBox(height: 10),
+              //           Row(
+              //             children: [
+              //               Expanded(
+              //                 child: Container(
+              //                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+              //                   decoration: BoxDecoration(
+              //                     border: Border.all(color: Colors.grey),
+              //                     borderRadius: BorderRadius.circular(8),
+              //                     color: Colors.white,
+              //                   ),
+              //                   child: Text(
+              //                     _selectedPdfFile != null
+              //                         ? _selectedPdfFile!.path.split('/').last
+              //                         : 'No file selected',
+              //                     style: const TextStyle(fontSize: 16, color: Colors.black54),
+              //                   ),
+              //                 ),
+              //               ),
+              //               const SizedBox(width: 10),
+              //               IconButton(
+              //                 icon: const Icon(Icons.upload_file_rounded),
+              //                 onPressed: _pickPdf,
+              //               ),
+              //             ],
+              //           ),
+              //           const SizedBox(height: 10),
+              //         ]
+              //       ],
+              //     ),
+              //   ),
+              // ),
 
               ElevatedButton(
                 onPressed: _saveProfile, // Save Profile
