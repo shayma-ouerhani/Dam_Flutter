@@ -1,7 +1,7 @@
 import 'package:damdleaders_flutter/features/Home/Screens/AddScreen.dart';
-import 'package:damdleaders_flutter/features/Home/Screens/EditProfileView.dart';
 import 'package:damdleaders_flutter/features/Home/Screens/ProfileHomeView.dart';
 import 'package:damdleaders_flutter/features/Home/Screens/SettingsView.dart';
+import 'package:damdleaders_flutter/features/Home/Screens/StatsView.dart';
 import 'package:damdleaders_flutter/features/Home/Screens/videoScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -17,10 +17,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<Widget> _pages = [
     VideoScreen(),
-    ProfileHomeView(),
+    Statsview(),
     AddPostScreen(),
-    const Text("libraryScreen"),
-    SettingsView(),
+    ProfileHomeView(),
+    SettingsView()
   ];
 
   void _onItemTapped(int index) {
@@ -47,16 +47,16 @@ class _HomeScreenState extends State<HomeScreen> {
             label: "Home",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: "Profile",
+            icon: Icon(Icons.bar_chart),
+            label: "Stats",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add_circle),
             label: "Add",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark),
-            label: "Saved",
+            icon: Icon(Icons.person),
+            label: "Profile",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),

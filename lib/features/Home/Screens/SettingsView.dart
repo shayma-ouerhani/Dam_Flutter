@@ -87,9 +87,9 @@ class SettingsView extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
+                      const Row(
                         // Suppression du const pour permettre la dynamique
-                        children: const [
+                        children: [
                           Icon(
                             Icons.dark_mode,
                             size: 24.0,

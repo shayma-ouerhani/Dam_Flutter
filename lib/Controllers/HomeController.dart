@@ -7,7 +7,7 @@ import 'package:http_parser/http_parser.dart';  // Import pour MediaType
 import 'package:mime/mime.dart';  // Import pour lookupMimeType
 
 class HomeController {
-  final String apiUrl = "http://192.168.1.129:3000"; // URL de l'API backend
+  final String apiUrl = "http://192.168.1.23:3000"; // URL de l'API backend
 
   // Méthode pour récupérer tous les posts
     Future<List<Post>> fetchVideos() async {
@@ -33,7 +33,7 @@ class HomeController {
     // Méthode pour récupérer les posts d'un utilisateur spécifique
   Future<List<Post>> fetchMyPosts(String userId) async {
 
-    final String apiUrl1 = "$apiUrl/post/user/67322ac07b0ef3c99e6a288c"; // API URL with user ID Statiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiique
+    final String apiUrl1 = "$apiUrl/post/user/674cabd54603d2eeb31c56e3"; // API URL with user ID Statiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiique
 
     try {
       final response = await http.get(Uri.parse(apiUrl1));
