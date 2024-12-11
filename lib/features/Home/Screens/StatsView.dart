@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'package:damdleaders_flutter/Controllers/HomeController.dart';
+import 'package:damdleaders_flutter/Models/Post.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
@@ -9,14 +11,18 @@ class Statsview extends StatefulWidget {
 
 class _ChartExampleState extends State<Statsview>
     with SingleTickerProviderStateMixin {
+
+  final HomeController postService = HomeController();
+  late Future<List<Post>> mesPosts;
+
   String selectedFilter = 'My Jobs Offer'; // Default filter
 
   List<Map<String, dynamic>> data = [
     {
       'filter': 'My Jobs Offer',
-      'jobs': List.generate(4, (i) => 'Job ${i + 1}'),
-      'applications': [5, 15, 25, 30],
-      'ageIntervals': {'18-25': 30, '26-35': 40, '36-45': 20, '46+': 10},
+      'jobs': List.generate(8, (i) => 'Job ${i + 1}'),
+      'applications': [13, 15, 10, 32, 20, 15, 10, 32],
+      'ageIntervals': {'18-25': 30, '26-35': 40, '36-45': 22, '46+': 8},
     },
     {
       'filter': 'Category B',
@@ -42,6 +48,7 @@ class _ChartExampleState extends State<Statsview>
   @override
   void initState() {
     super.initState();
+    mesPosts = postService.fetchMyPosts("674cabd54603d2eeb31c56e3");
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 800),
@@ -211,96 +218,6 @@ class _ChartExampleState extends State<Statsview>
           ),
           const Divider(thickness: 1),      
           // Line Chart Section
-          /*Expanded(            
-            child: Padding(
-              padding: const EdgeInsets.only(top: 25.0, left: 16.0, right: 16.0),
-              child: 
-              const Text(
-                      'Age Distribution of Candidates',
-                      style: TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    LineChart(
-                LineChartData(
-                  lineBarsData: [
-                    LineChartBarData(
-                      spots: applications
-                          .asMap()
-                          .entries
-                          .map((entry) => FlSpot(entry.key.toDouble(), entry.value))
-                          .toList(),
-                      isCurved: true,
-                      barWidth: 4,
-                      gradient: const LinearGradient(
-                        colors: [Colors.green, Colors.lightGreen],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
-                      dotData: FlDotData(show: true),
-                      belowBarData: BarAreaData(
-                        show: true,
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.green.withOpacity(0.2),
-                            Colors.lightGreen.withOpacity(0.1)
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                  titlesData: FlTitlesData(
-                    leftTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        reservedSize: 40,
-                        getTitlesWidget: (value, meta) {
-                          return Text(
-                            value.toInt().toString(),
-                            style: const TextStyle(fontSize: 12),
-                          );
-                        },
-                      ),
-                    ),
-                    bottomTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        reservedSize: 40,
-                        getTitlesWidget: (value, meta) {
-                          int index = value.toInt();
-                          if (index >= 0 && index < jobs.length) {
-                            return Text(
-                              jobs[index],
-                              style: const TextStyle(fontSize: 10),
-                            );
-                          }
-                          return const Text('');
-                        },
-                      ),
-                    ),
-                    topTitles: AxisTitles(
-                      sideTitles: SideTitles(showTitles: false), // Hide top numbers
-                    ),
-                    rightTitles: AxisTitles(
-                      sideTitles: SideTitles(showTitles: false), // Hide right numbers
-                    ),
-                  ),
-                  gridData: FlGridData(show: true),
-                  borderData: FlBorderData(
-                    border: const Border(
-                      left: BorderSide(color: Colors.black),
-                      bottom: BorderSide(color: Colors.black),
-                      top: BorderSide.none,
-                      right: BorderSide.none,
-                    ),
-                  ),
-                  minX: 0,
-                  maxX: applications.length.toDouble() - 1,
-                  minY: 0,
-                  maxY: applications.reduce(max) + 10,
-                ),
-              ),
-            ),
-          ),*/
           Expanded(
   child: Padding(
     padding: const EdgeInsets.only(top: 8.0, left: 16.0, right: 16.0),

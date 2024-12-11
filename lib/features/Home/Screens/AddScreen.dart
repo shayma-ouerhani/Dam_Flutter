@@ -232,28 +232,27 @@ class _AddPostScreenState extends State<AddPostScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 27.0), // Espacement en haut de la page
-
+            const SizedBox(height: 27.0), // Espacement en haut de la page
             const Row(
               children: [
                 CircleAvatar(
                   radius: 25,
                   backgroundImage: NetworkImage(
-                      "https://res.cloudinary.com/dcjtuxprn/image/upload/v1732755984/UploadLeaders/1000014203.jpg"), // Remplace par l'image de l'utilisateur
+                      "https://res.cloudinary.com/dcjtuxprn/image/upload/v1733872892/UploadLeaders/Messenger_creation_CE9410BB-0794-4261-88AC-60CD8F180A91.jpg"), // Remplace par l'image de l'utilisateur
                 ),
                 SizedBox(width: 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "yesser khaloui",
+                      "Yassine Ajbouni",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                     ),
                     Text(
-                      "software developer",
+                      "Flutter Developer",
                       style: TextStyle(color: Colors.grey),
                     ),
                   ],
