@@ -32,7 +32,7 @@ class _LoginTextFieldState extends State<LoginTextField> {
   @override
   void initState() {
     super.initState();
-    _focusNode = FocusNode(); // Initialisation du FocusNode
+    _focusNode = FocusNode();
 
     if (widget.label == "Password" || widget.label == "Confirm Password") {
       _obscureText = true;
@@ -41,7 +41,7 @@ class _LoginTextFieldState extends State<LoginTextField> {
 
   @override
   void dispose() {
-    _focusNode.dispose(); // Nettoyage du FocusNode quand le widget est détruit
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -57,43 +57,28 @@ class _LoginTextFieldState extends State<LoginTextField> {
             style: TextStyle(
               fontSize: widget.textSize,
               fontWeight: FontWeight.w400,
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(
-                  0.8), // Augmenter l'opacité pour le texte du label
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
             ),
           ),
         ),
-        const SizedBox(height: 8), // Ajoute un espace vertical
+        const SizedBox(height: 8),
         TextFormField(
           enabled: widget.enabled,
           controller: widget.controller,
-          focusNode: _focusNode, // Ajoute le FocusNode au TextFormField
+          focusNode: _focusNode,
           obscureText: _obscureText,
-          onSaved: (newValue) {
-            if (widget.updateValue != null) {
-              widget.updateValue!(newValue!);
-            }
-          },
-          validator: (value) {
-            return widget.validate(value);
-          },
-          onTapOutside: (event) {
-            FocusManager.instance.primaryFocus?.unfocus();
-          },
+          onChanged: widget.updateValue,
+          validator: widget.validate,
           style: TextStyle(
             fontSize: widget.textSize,
             height: widget.height,
-            color: Theme.of(context)
-                .colorScheme
-                .onSurface, // Assure que le texte a la bonne couleur
+            color: Theme.of(context).colorScheme.onSurface,
           ),
           decoration: InputDecoration(
             isDense: true,
             prefixIcon: Icon(
               widget.icon,
-              color: Theme.of(context)
-                  .colorScheme
-                  .onSurface
-                  .withOpacity(0.8), // Augmenter l'opacité pour l'icône
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
               size: 18,
             ),
             hintText: widget.label,
@@ -101,9 +86,9 @@ class _LoginTextFieldState extends State<LoginTextField> {
               fontSize: widget.textSize,
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
             ),
-            suffixIcon: widget.label == 'Password' ||
+            suffixIcon: (widget.label == 'Password' ||
                     widget.label == 'New Password' ||
-                    widget.label == 'Confirm Password'
+                    widget.label == 'Confirm Password')
                 ? IconButton(
                     icon: Icon(
                       _obscureText ? Icons.visibility_off : Icons.visibility,
@@ -118,19 +103,13 @@ class _LoginTextFieldState extends State<LoginTextField> {
                 : null,
             border: OutlineInputBorder(
               borderSide: BorderSide(
-                color: _focusNode.hasFocus
-                    ? const Color(0xFF130160) // Couleur plus intense
-                    : Theme.of(context).colorScheme.onSurface.withOpacity(
-                        0.3), // Couleur faible quand il n'y a pas de focus
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3),
               ),
               borderRadius: BorderRadius.circular(8),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: _focusNode.hasFocus
-                    ? const Color(
-                        0xFF130160) // Couleur de bordure plus intense quand le champ est focus
-                    : Theme.of(context).primaryColor.withOpacity(0.9),
+                color: const Color(0xFF130160),
               ),
               borderRadius: BorderRadius.circular(8),
             ),
