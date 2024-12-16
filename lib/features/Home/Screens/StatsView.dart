@@ -11,7 +11,6 @@ class Statsview extends StatefulWidget {
 
 class _ChartExampleState extends State<Statsview>
     with SingleTickerProviderStateMixin {
-
   final HomeController postService = HomeController();
   late Future<List<Post>> mesPosts;
 
@@ -88,6 +87,8 @@ class _ChartExampleState extends State<Statsview>
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Enhanced Charts'),
@@ -158,7 +159,7 @@ class _ChartExampleState extends State<Statsview>
                           fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  const SizedBox(height: 110,),
+                  const SizedBox(height: 80),
                   Expanded(
                     child: PieChart(
                       PieChartData(
@@ -168,9 +169,11 @@ class _ChartExampleState extends State<Statsview>
                             value: agePercentages[index],
                             color: Colors.primaries[index % Colors.primaries.length],
                             title: '${agePercentages[index].toStringAsFixed(1)}%',
-                            radius: 60,
-                            titleStyle: const TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.bold),
+                            radius: width > 600 ? 60 : 50, // Adjust for larger screens
+                            titleStyle: TextStyle(
+                              fontSize: width > 600 ? 16 : 14, 
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         centerSpaceRadius: 50,
@@ -178,7 +181,6 @@ class _ChartExampleState extends State<Statsview>
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
                   // Age Intervals Legend
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -219,104 +221,102 @@ class _ChartExampleState extends State<Statsview>
           const Divider(thickness: 1),      
           // Line Chart Section
           Expanded(
-  child: Padding(
-    padding: const EdgeInsets.only(top: 8.0, left: 16.0, right: 16.0),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Center(
-          child: Text(
-            'Number of Applications per Job Offer',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-        ),
-        Expanded(
-          child: LineChart(
-            LineChartData(
-              lineBarsData: [
-                LineChartBarData(
-                  spots: applications
-                      .asMap()
-                      .entries
-                      .map((entry) => FlSpot(entry.key.toDouble(), entry.value))
-                      .toList(),
-                  isCurved: true,
-                  barWidth: 4,
-                  gradient: const LinearGradient(
-                    colors: [Colors.green, Colors.lightGreen],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
-                  dotData: FlDotData(show: true),
-                  belowBarData: BarAreaData(
-                    show: true,
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.green.withOpacity(0.2),
-                        Colors.lightGreen.withOpacity(0.1),
-                      ],
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8.0, left: 16.0, right: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Center(
+                    child: Text(
+                      'Number of Applications per Job Offer',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
-                ),
-              ],
-              titlesData: FlTitlesData(
-                leftTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    reservedSize: 40,
-                    getTitlesWidget: (value, meta) {
-                      return Text(
-                        value.toInt().toString(),
-                        style: const TextStyle(fontSize: 12),
-                      );
-                    },
+                  Expanded(
+                    child: LineChart(
+                      LineChartData(
+                        lineBarsData: [
+                          LineChartBarData(
+                            spots: applications
+                                .asMap()
+                                .entries
+                                .map((entry) => FlSpot(entry.key.toDouble(), entry.value))
+                                .toList(),
+                            isCurved: true,
+                            barWidth: 4,
+                            gradient: const LinearGradient(
+                              colors: [Colors.green, Colors.lightGreen],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
+                            dotData: FlDotData(show: true),
+                            belowBarData: BarAreaData(
+                              show: true,
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.green.withOpacity(0.2),
+                                  Colors.lightGreen.withOpacity(0.1),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                        titlesData: FlTitlesData(
+                          leftTitles: AxisTitles(
+                            sideTitles: SideTitles(
+                              showTitles: true,
+                              reservedSize: 40,
+                              getTitlesWidget: (value, meta) {
+                                return Text(
+                                  value.toInt().toString(),
+                                  style: const TextStyle(fontSize: 12),
+                                );
+                              },
+                            ),
+                          ),
+                          bottomTitles: AxisTitles(
+                            sideTitles: SideTitles(
+                              showTitles: true,
+                              reservedSize: 40,
+                              getTitlesWidget: (value, meta) {
+                                int index = value.toInt();
+                                if (index >= 0 && index < jobs.length) {
+                                  return Text(
+                                    jobs[index],
+                                    style: const TextStyle(fontSize: 10),
+                                  );
+                                }
+                                return const Text('');
+                              },
+                            ),
+                          ),
+                          topTitles: AxisTitles(
+                            sideTitles: SideTitles(showTitles: false), // Hide top numbers
+                          ),
+                          rightTitles: AxisTitles(
+                            sideTitles: SideTitles(showTitles: false), // Hide right numbers
+                          ),
+                        ),
+                        gridData: FlGridData(show: true),
+                        borderData: FlBorderData(
+                          border: const Border(
+                            left: BorderSide(color: Colors.black),
+                            bottom: BorderSide(color: Colors.black),
+                            top: BorderSide.none,
+                            right: BorderSide.none,
+                          ),
+                        ),
+                        minX: 0,
+                        maxX: applications.length.toDouble() - 1,
+                        minY: 0,
+                        maxY: applications.reduce(max) + 10,
+                      ),
+                    ),
                   ),
-                ),
-                bottomTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    reservedSize: 40,
-                    getTitlesWidget: (value, meta) {
-                      int index = value.toInt();
-                      if (index >= 0 && index < jobs.length) {
-                        return Text(
-                          jobs[index],
-                          style: const TextStyle(fontSize: 10),
-                        );
-                      }
-                      return const Text('');
-                    },
-                  ),
-                ),
-                topTitles: AxisTitles(
-                  sideTitles: SideTitles(showTitles: false), // Hide top numbers
-                ),
-                rightTitles: AxisTitles(
-                  sideTitles: SideTitles(showTitles: false), // Hide right numbers
-                ),
+                ],
               ),
-              gridData: FlGridData(show: true),
-              borderData: FlBorderData(
-                border: const Border(
-                  left: BorderSide(color: Colors.black),
-                  bottom: BorderSide(color: Colors.black),
-                  top: BorderSide.none,
-                  right: BorderSide.none,
-                ),
-              ),
-              minX: 0,
-              maxX: applications.length.toDouble() - 1,
-              minY: 0,
-              maxY: applications.reduce(max) + 10,
             ),
-          ),
-        ),
-      ],
-    ),
-  ),
-)
-
-
+          )
         ],
       ),
     );

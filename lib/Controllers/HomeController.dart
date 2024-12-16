@@ -1,13 +1,13 @@
-
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import '../Models/Post.dart';
+import '../Models/Candidat.dart';
 import 'package:http_parser/http_parser.dart';  // Import pour MediaType
 import 'package:mime/mime.dart';  // Import pour lookupMimeType
 
 class HomeController {
-  final String apiUrl = "http://192.168.1.23:3000"; // URL de l'API backend
+  final String apiUrl = "http://192.168.1.45:3000"; // URL de l'API backend
 
   // Méthode pour récupérer tous les posts
     Future<List<Post>> fetchVideos() async {
@@ -30,7 +30,7 @@ class HomeController {
       }
     }
 
-    // Méthode pour récupérer les posts d'un utilisateur spécifique
+  // Méthode pour récupérer les posts d'un utilisateur spécifique
   Future<List<Post>> fetchMyPosts(String userId) async {
 
     final String apiUrl1 = "$apiUrl/post/user/674cabd54603d2eeb31c56e3"; // API URL with user ID Statiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiique
@@ -56,11 +56,34 @@ class HomeController {
     }
   }
 
+  // Méthode pour récupérer les candidats par ID de publication
+  Future<List<Candidat>> fetchCandidatesByPost(String postId) async {
+    final String apiUrl1 = "$apiUrl/postuler/usersByPost/$postId"; // L'URL de l'API backend
+
+    try {
+      final response = await http.get(Uri.parse(apiUrl1));
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        print("------------------------data-----------------------------");
+        print(data);
+        print("-----------------------------------------------------");
+
+        // Retourner une liste d'objets Candidate
+        return data.map((json) => Candidat.fromJson(json)).toList();
+      } else {
+        throw Exception("Failed to load candidates");
+      }
+    } catch (e) {
+      throw Exception("Error fetching candidates: $e");
+    }
+  }
+
 
   // Method to update user profile
   Future<Map<String, dynamic>> updateUserProfile(
       String userId, Map<String, dynamic> profileData, File? photo) async {
-    final String updateProfileUrl = "$apiUrl/user/674cabd54603d2eeb31c56e3";
+    final String updateProfileUrl = "$apiUrl/user/67322ac07b0ef3c99e6a288c";
 
     try {
       var request = http.MultipartRequest('PUT', Uri.parse(updateProfileUrl));
@@ -145,5 +168,6 @@ class HomeController {
 
 
 }
+
 
 
