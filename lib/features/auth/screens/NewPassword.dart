@@ -180,7 +180,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
   // Fonction de réinitialisation du mot de passe
   Future<Map<String, dynamic>> resetPassword(String resetToken, String newPassword) async {
     final response = await http.put(
-      Uri.parse("http://192.168.1.129:3000/auth/reset-password"), // Remplacez par l'URL réelle
+      Uri.parse("http://192.168.1.7:3000/auth/reset-password"), // Remplacez par l'URL réelle
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
