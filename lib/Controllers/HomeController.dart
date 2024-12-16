@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:damdleaders_flutter/Models/Survey.dart';
 import 'package:http/http.dart' as http;
 import '../Models/Post.dart';
 import '../Models/Candidat.dart';
@@ -79,6 +80,25 @@ class HomeController {
     }
   }
 
+
+// Method to fetch the survey based on the postId
+  Future<Survey> fetchSurveyByPost(String postId) async {
+    final String apiUrl3 = "$apiUrl/post/survey/$postId"; // Replace with actual API URL
+
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return Survey.fromJson(data);
+      } else {
+        throw Exception("Failed to load survey");
+      }
+    } catch (e) {
+      throw Exception("Error fetching survey: $e");
+    }
+  }
+/************************** */
 
   // Method to update user profile
   Future<Map<String, dynamic>> updateUserProfile(
