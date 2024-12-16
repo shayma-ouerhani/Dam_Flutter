@@ -3,9 +3,14 @@ class Survey {
 
   Survey({required this.questions});
 
-  factory Survey.fromJson(Map<String, dynamic> json) {
-    return Survey(
-      questions: List<String>.from(json['questions'] ?? []), // Ensure it's a list of strings
-    );
+factory Survey.fromJson(dynamic json) {
+  if (json is List) {
+    return Survey(questions: List<String>.from(json));
+  } else if (json is Map<String, dynamic>) {
+    return Survey(questions: List<String>.from(json['questions'] ?? []));
+  } else {
+    throw Exception("Unexpected JSON format");
   }
+}
+
 }

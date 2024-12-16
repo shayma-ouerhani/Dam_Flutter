@@ -361,7 +361,7 @@ class _CandidatesListScreenState extends State<CandidatesListScreen> {
                   ),
                   // Survey Tab
                   //const SurveyWidget(),
-                  const SurveyWidgetScreen(postId: "some_post_id_here")
+                  const SurveyWidgetScreen(postId: "676063c975d37351bf618e0b")
                 ],
               ),
             ),
@@ -390,7 +390,6 @@ class SurveyWidgetScreen extends StatefulWidget {
 
 class _SurveyWidgetScreenState extends State<SurveyWidgetScreen> {
   final HomeController postService = HomeController();
-  // Declare a Future to fetch the survey
   late Future<Survey> survey;
 
   @override
@@ -399,8 +398,6 @@ class _SurveyWidgetScreenState extends State<SurveyWidgetScreen> {
     // Initialize the Future to fetch survey data
     survey = postService.fetchSurveyByPost(widget.postId);
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -411,7 +408,23 @@ class _SurveyWidgetScreenState extends State<SurveyWidgetScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text("Error: ${snapshot.error}"));
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Error: ${snapshot.error}"),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        survey = postService.fetchSurveyByPost(widget.postId);
+                      });
+                    },
+                    child: const Text("Retry"),
+                  ),
+                ],
+              ),
+            );
           } else if (!snapshot.hasData || snapshot.data!.questions.isEmpty) {
             return const Center(child: Text("No questions available."));
           } else {
@@ -438,6 +451,7 @@ class _SurveyWidgetScreenState extends State<SurveyWidgetScreen> {
                                 ),
                               ),
                               const SizedBox(height: 10),
+                              // Add input fields for user answers here if needed
                             ],
                           ),
                         ),
@@ -447,20 +461,15 @@ class _SurveyWidgetScreenState extends State<SurveyWidgetScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Survey submitted!"),
-                            ),
-                          );
-                        },
-                        child: const Text("Submit"),
-                      ),
-                      const SizedBox(width: 100),
-                    ],
+                  child: ElevatedButton(
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Survey submitted!"),
+                        ),
+                      );
+                    },
+                    child: const Text("Submit"),
                   ),
                 ),
               ],

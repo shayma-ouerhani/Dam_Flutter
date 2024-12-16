@@ -80,24 +80,23 @@ class HomeController {
     }
   }
 
-
 // Method to fetch the survey based on the postId
-  Future<Survey> fetchSurveyByPost(String postId) async {
-    final String apiUrl3 = "$apiUrl/post/survey/$postId"; // Replace with actual API URL
+Future<Survey> fetchSurveyByPost(String postId) async {
+  final String apiUrl3 = "$apiUrl/post/survey/$postId"; // Replace with actual API URL
 
-    try {
-      final response = await http.get(Uri.parse(apiUrl));
+  try {
+    final response = await http.get(Uri.parse(apiUrl3));
 
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        return Survey.fromJson(data);
-      } else {
-        throw Exception("Failed to load survey");
-      }
-    } catch (e) {
-      throw Exception("Error fetching survey: $e");
+    if (response.statusCode == 200) {
+  final List<dynamic> data = json.decode(response.body);
+  return Survey(questions: List<String>.from(data));
+    } else {
+      throw Exception("Failed to load survey: ${response.body}");
     }
+  } catch (e) {
+    throw Exception("Error fetching survey: $e");
   }
+}
 /************************** */
 
   // Method to update user profile
