@@ -311,15 +311,34 @@ class _CandidatesListScreenState extends State<CandidatesListScreen> {
         length: 2, // Number of tabs
         child: Column(
           children: [
-            const TabBar(
-              indicatorColor: Colors.blue,
-              labelColor: Colors.black,
-              unselectedLabelColor: Colors.grey,
-              tabs: [
-                Tab(text: "Candidates"),
-                Tab(text: "Survey"),
-              ],
-            ),
+            // const TabBar(
+            //   indicatorColor: Colors.blue,
+            //   labelColor: Colors.black,
+            //   unselectedLabelColor: Colors.grey,
+            //   tabs: [
+            //     Tab(text: "Candidates"),
+            //     Tab(text: "Survey"),
+            //   ],
+            // ),
+            TabBar(
+  indicatorColor: Colors.blue,
+  labelColor: Colors.black,
+  unselectedLabelColor: Colors.grey,
+  tabs: [
+    Tab(text: "Candidates"),
+    Tab(
+      child: Row(
+        mainAxisSize: MainAxisSize.min, // Ensures the row takes only the required space
+        children: [
+          Text("Survey"), // Text
+          SizedBox(width: 8), // Space between text and image
+          Image.asset("assets/ai.png", height: 25, width: 25),
+        ],
+      ),
+    ),
+  ],
+),
+
             Expanded(
               child: TabBarView(
                 children: [
@@ -373,9 +392,6 @@ class _CandidatesListScreenState extends State<CandidatesListScreen> {
 }
 
 
-
-
-
 class SurveyWidgetScreen extends StatefulWidget {
   final String postId; // Accept postId as a parameter to fetch survey
 
@@ -392,18 +408,29 @@ class _SurveyWidgetScreenState extends State<SurveyWidgetScreen> {
   final HomeController postService = HomeController();
   late Future<Survey> survey;
 
+  // List of TextEditingControllers to store user input
+  List<TextEditingController> answerControllers = [];
+
   @override
   void initState() {
     super.initState();
-    // Initialize the Future to fetch survey data
     survey = postService.fetchSurveyByPost(widget.postId);
+  }
+
+  @override
+  void dispose() {
+    // Dispose controllers to avoid memory leaks
+    for (var controller in answerControllers) {
+      controller.dispose();
+    }
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<Survey>(
-        future: survey, // Fetch the survey based on the postId
+        future: survey,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -428,13 +455,21 @@ class _SurveyWidgetScreenState extends State<SurveyWidgetScreen> {
           } else if (!snapshot.hasData || snapshot.data!.questions.isEmpty) {
             return const Center(child: Text("No questions available."));
           } else {
-            final survey = snapshot.data!; // The fetched survey
+            final surveyData = snapshot.data!;
+            answerControllers = List.generate(
+              surveyData.questions.length,
+              (index) => TextEditingController(
+                text: "Q${index + 1}: ${surveyData.questions[index]}"
+              ),
+            );
+
+
 
             return Column(
               children: [
                 Expanded(
                   child: ListView.builder(
-                    itemCount: survey.questions.length,
+                    itemCount: surveyData.questions.length,
                     itemBuilder: (context, index) {
                       return Card(
                         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -443,15 +478,17 @@ class _SurveyWidgetScreenState extends State<SurveyWidgetScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "Q${index + 1}: ${survey.questions[index]}",
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                              // User Input Field
+                              TextField(
+                                controller: answerControllers[index],
+                                maxLines: null, // Allows the field to grow dynamically with content
+                                keyboardType: TextInputType.multiline, // Enables multiline keyboard on mobile
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
                                 ),
                               ),
-                              const SizedBox(height: 10),
-                              // Add input fields for user answers here if needed
+
+
                             ],
                           ),
                         ),
@@ -463,15 +500,48 @@ class _SurveyWidgetScreenState extends State<SurveyWidgetScreen> {
                   padding: const EdgeInsets.all(16.0),
                   child: ElevatedButton(
                     onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("Survey submitted!"),
-                        ),
-                      );
+                      // Collect user answers
+                      List<String> userAnswers = answerControllers
+                          .map((controller) => controller.text.trim()) // Trim whitespace
+                          .toList();
+
+                      // Check for empty answers
+                      if (userAnswers.any((answer) => answer.isEmpty)) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Please answer all questions before submitting."),
+                            backgroundColor: Colors.red, // Error color
+                          ),
+                        );
+                      } else {
+                        // Print answers and show success message
+                        print("User Answers: $userAnswers");
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Survey submitted successfully!"),
+                          ),
+                        );
+                      }
                     },
-                    child: const Text("Submit"),
-                  ),
-                ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 48, 0, 131),
+                      minimumSize: const Size(350, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text(
+                      "Submit",
+                      style: TextStyle(
+                        color: Colors.white, // Set text color to white
+                        fontSize: 16,        // Optional: Adjust font size
+                        fontWeight: FontWeight.bold, // Optional: Make it bold
+                      ),
+                    ),
+                      ),
+                    ),
+
               ],
             );
           }

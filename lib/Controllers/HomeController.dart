@@ -8,7 +8,7 @@ import 'package:http_parser/http_parser.dart';  // Import pour MediaType
 import 'package:mime/mime.dart';  // Import pour lookupMimeType
 
 class HomeController {
-  final String apiUrl = "http://192.168.1.45:3000"; // URL de l'API backend
+  final String apiUrl = "http://192.168.1.22:3000"; // URL de l'API backend
 
   // Méthode pour récupérer tous les posts
     Future<List<Post>> fetchVideos() async {
@@ -134,7 +134,7 @@ Future<Survey> fetchSurveyByPost(String postId) async {
         throw Exception("Failed to update profile: ${response.statusCode}");
       }
     } catch (e) {
-      print("tneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeket:");
+      print("tneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeet:");
       print("Error updating profile: $e");
       throw Exception("Error updating profile: $e");
               
