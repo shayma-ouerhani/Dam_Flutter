@@ -7,11 +7,11 @@ import 'package:http_parser/http_parser.dart';  // Import pour MediaType
 import 'package:mime/mime.dart';  // Import pour lookupMimeType
 
 class HomeController {
-  final String apiUrl = "http://192.168.1.23:3000"; // URL de l'API backend
+  final String apiUrl = "http://192.168.1.129:3000"; // URL de l'API backend
 
   // Méthode pour récupérer tous les posts
     Future<List<Post>> fetchVideos() async {
-      // print("11111111111111111111111111111111111111111111111111111111111111111111");
+       print("11111111111111111111111111111111111111111111111111111111111111111111");
       try {
         final response = await http.get(Uri.parse('$apiUrl/post'));
 
@@ -95,7 +95,6 @@ class HomeController {
       print("tneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeket:");
       print("Error updating profile: $e");
       throw Exception("Error updating profile: $e");
-              
 
     }
   }
@@ -133,7 +132,7 @@ class HomeController {
       var response = await request.send();
 
       // Vérifier la réponse
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         print("Post ajouté avec succès");
       } else {
         print("Erreur lors de l'ajout du post : ${response.statusCode}");
@@ -142,7 +141,6 @@ class HomeController {
       print("Erreur : $e");
     }
   }
-
 
 }
 

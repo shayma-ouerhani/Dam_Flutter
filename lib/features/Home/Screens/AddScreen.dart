@@ -168,6 +168,7 @@
 //   }
 // }
 import 'package:damdleaders_flutter/Controllers/HomeController.dart';
+import 'package:damdleaders_flutter/features/Widgets/notification.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
@@ -190,6 +191,9 @@ class AddPostScreen extends StatefulWidget {
 }
 
 class _AddPostScreenState extends State<AddPostScreen> {
+
+  final notif =  NotificationScreenState();
+
   final controller = HomeController();
   File? _selectedVideo; // Fichier vidéo sélectionné
   VideoPlayerController? _videoController; // Contrôleur pour le lecteur vidéo
@@ -326,6 +330,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 const Spacer(), // Espace pour décaler à droite
                 TextButton(
                   onPressed: () {
+                    print("11111111111111111111111111111111111");
+                    notif.showNotification();
+                    print("22222222222222222222222222222222222222");
                     if (_selectedVideo != null && title.isNotEmpty && description.isNotEmpty) {
                       controller.addPost(
                         title: title,

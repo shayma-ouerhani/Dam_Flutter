@@ -6,9 +6,10 @@ import '../Models/Auth/LoginResponse.dart';
 
 class AuthController {
   // URL de l'API backend pour la connexion et l'enregistrement
-  final String loginUrl = "http://192.168.1.23:3000/auth/login";
+  final String loginUrl = "http://192.168.31.79:3000/auth/login";
   final String registerUrl = "http://192.168.1.23:3000/auth/signup";
   final String api = "http://192.168.1.23:3000/auth";
+  final String apiUrl = "http://192.168.1.129:3000";
   /// Fonction pour effectuer une connexion
   login(String email, String password) async {
     try {
@@ -20,7 +21,7 @@ class AuthController {
 
       // Envoi de la requête POST
       final response = await http.post(
-        Uri.parse(loginUrl),
+        Uri.parse('$apiUrl/auth/login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(body),
       );
@@ -62,7 +63,7 @@ class AuthController {
 
       // Envoi de la requête POST pour l'enregistrement
       final response = await http.post(
-        Uri.parse(registerUrl),
+        Uri.parse('$apiUrl/auth/signup'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(body),
       );
@@ -84,7 +85,7 @@ class AuthController {
   }
   Future<Map<String, dynamic>> resetPassword(String resetToken, String newPassword) async {
     final response = await http.put(
-      Uri.parse("$api/reset-password"),
+      Uri.parse("$apiUrl/auth/reset-password"),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
