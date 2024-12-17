@@ -1,6 +1,7 @@
 import 'package:damdleaders_flutter/Controllers/HomeController.dart';
 import 'package:damdleaders_flutter/Models/Post.dart';
 import 'package:damdleaders_flutter/Models/Survey.dart';
+import 'package:damdleaders_flutter/config/UserPreference/User_preferences.dart';
 import 'package:damdleaders_flutter/features/Home/Screens/EditProfileView.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -23,9 +24,17 @@ class _ProfileHomeViewState extends State<ProfileHomeView> {
 
   final TextEditingController searchController = TextEditingController();
 
+  // Variables pour stocker les informations utilisateur
+  String? userName;
+  String? userLastName;
+  String? userDomaine;
+
+  bool isLoadingUserData = true; // Indicateur de chargement
+
   @override
   void initState() {
     super.initState();
+     _loadUserData(); // Charger les données utilisateur
     // Initialize the Future
     mesPosts = postService.fetchMyPosts("674cabd54603d2eeb31c56e3");
 
@@ -35,6 +44,20 @@ class _ProfileHomeViewState extends State<ProfileHomeView> {
         filteredPosts = posts; // Initially, the filtered list equals the full list
       });
     });
+  }
+
+Future<void> _loadUserData() async {
+    try {
+      userName = await UserPreference.getName() ;
+      userLastName = await UserPreference.getLastName() ;
+      userDomaine = await UserPreference.getDomaine() ;
+    } catch (e) {
+      print("Erreur lors de la récupération des données utilisateur : $e");
+    } finally {
+      setState(() {
+        isLoadingUserData = false; // Fin du chargement
+      });
+    }
   }
 
 void filterPosts(String query) {
@@ -82,8 +105,8 @@ String _formatDate(String? dateString) {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    "Yassine Ajbouni",
+                  Text(
+                    "${userName ?? 'Name'} ${userLastName ?? 'Last Name'}",
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   IconButton(
@@ -136,8 +159,8 @@ String _formatDate(String? dateString) {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    "Yassine Ajbouni",
+                  Text(
+                    "${userName ?? 'Name'} ${userLastName ?? 'Last Name'}",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(width: 8),
@@ -149,8 +172,8 @@ String _formatDate(String? dateString) {
                       color: Color.fromARGB(255, 14, 13, 13),
                     ),
                   ),
-                  const Text(
-                    "Flutter Developer",
+                  Text(
+                     "${userDomaine ?? 'Domaine'}",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   IconButton(

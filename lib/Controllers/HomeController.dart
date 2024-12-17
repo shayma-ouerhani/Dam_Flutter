@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:damdleaders_flutter/Models/Stats.dart';
 import 'package:damdleaders_flutter/Models/Survey.dart';
 import 'package:http/http.dart' as http;
 import '../Models/Post.dart';
@@ -8,7 +9,7 @@ import 'package:http_parser/http_parser.dart';  // Import pour MediaType
 import 'package:mime/mime.dart';  // Import pour lookupMimeType
 
 class HomeController {
-  final String apiUrl = "http://192.168.1.22:3000"; // URL de l'API backend
+  final String apiUrl = "http://192.168.55.132:3000"; // URL de l'API backend
 
   // Méthode pour récupérer tous les posts
     Future<List<Post>> fetchVideos() async {
@@ -97,6 +98,25 @@ Future<Survey> fetchSurveyByPost(String postId) async {
     throw Exception("Error fetching survey: $e");
   }
 }
+
+// Fetching stats for a user
+Future<List<Stats>> fetchApplicationsPerPost(String userId) async {
+  final String apiUrl1 = "$apiUrl/postuler/stats/$userId"; // Corrected endpoint
+  try {
+    final response = await http.get(Uri.parse(apiUrl1));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+
+      // Parse JSON into a list of Stats objects
+      return data.map((jsonItem) => Stats.fromJson(jsonItem)).toList();
+    } else {
+      throw Exception("Failed to load Stats: ${response.statusCode} - ${response.body}");
+    }
+  } catch (e) {
+    throw Exception("Error fetching stats: $e");
+  }
+}
 /************************** */
 
   // Method to update user profile
@@ -134,7 +154,7 @@ Future<Survey> fetchSurveyByPost(String postId) async {
         throw Exception("Failed to update profile: ${response.statusCode}");
       }
     } catch (e) {
-      print("tneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeet:");
+      print("teeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeet:");
       print("Error updating profile: $e");
       throw Exception("Error updating profile: $e");
               
