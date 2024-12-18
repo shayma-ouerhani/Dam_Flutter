@@ -1,5 +1,6 @@
 import 'package:damdleaders_flutter/Controllers/HomeController.dart';
 import 'package:damdleaders_flutter/Models/Post.dart';
+import 'package:damdleaders_flutter/config/UserPreference/User_preferences.dart';
 import 'package:damdleaders_flutter/features/Home/Screens/EditProfileView.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -16,58 +17,78 @@ class ProfileHomeView extends StatefulWidget {
 class _ProfileHomeViewState extends State<ProfileHomeView> {
   final HomeController postService = HomeController();
 
+
   late Future<List<Post>> mesPosts; // Future for the posts
   List<Post> allPosts = []; // Store all fetched posts
   List<Post> filteredPosts = []; // Filtered list for search
-
   final TextEditingController searchController = TextEditingController();
+  // Variables pour stocker les informations utilisateur
+  String? userName;
+  String? userLastName;
+  String? userDomaine;
+
+  bool isLoadingUserData = true; // Indicateur de chargement
 
   @override
   void initState() {
     super.initState();
+    _loadUserData(); // Charger les données utilisateur
     // Initialize the Future
     mesPosts = postService.fetchMyPosts("674cabd54603d2eeb31c56e3");
 
     mesPosts.then((posts) {
       setState(() {
         allPosts = posts; // Store all posts
-        filteredPosts = posts; // Initially, the filtered list equals the full list
+        filteredPosts =
+            posts; // Initially, the filtered list equals the full list
       });
     });
   }
 
-void filterPosts(String query) {
-  setState(() {
-    if (query.isEmpty) {
-      filteredPosts = List.from(allPosts); // Réinitialise la liste filtrée
-    } else {
-      filteredPosts = allPosts.where((post) {
-        final title = post.title?.toLowerCase() ?? ""; // Titre du post
-        final date = _formatDate(post.createdAt); // Date formatée
-        final searchQuery = query.toLowerCase(); // Requête en minuscule
-
-        // Vérifie si le titre ou la date contient la requête
-        return title.contains(searchQuery) || date.toLowerCase().contains(searchQuery);
-      }).toList();
+  Future<void> _loadUserData() async {
+    try {
+      userName = await UserPreference.getName() as String?;
+      userLastName = await UserPreference.getLastName() as String?;
+      userDomaine = await UserPreference.getDomaine() as String?;
+    } catch (e) {
+      print("Erreur lors de la récupération des données utilisateur : $e");
+    } finally {
+      setState(() {
+        isLoadingUserData = false; // Fin du chargement
+      });
     }
-  });
-}
-
-String _formatDate(String? dateString) {
-  if (dateString == null || dateString.isEmpty) {
-    return "No date";
   }
-  try {
-    // Convertir la chaîne en DateTime
-    DateTime parsedDate = DateTime.parse(dateString);
 
-    // Formater la date (par exemple, "dd MMM yyyy")
-    return DateFormat('dd MMM yyyy').format(parsedDate);
-  } catch (e) {
-    return "Invalid date"; // En cas d'erreur dans le formatage
+  void filterPosts(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        filteredPosts = List.from(allPosts);
+      } else {
+        filteredPosts = allPosts.where((post) {
+          final title = post.title?.toLowerCase() ?? "";
+          final date = _formatDate(post.createdAt);
+          final searchQuery = query.toLowerCase();
+          return title.contains(searchQuery) ||
+              date.toLowerCase().contains(searchQuery);
+        }).toList();
+      }
+    });
   }
-}
 
+  String _formatDate(String? dateString) {
+    if (dateString == null || dateString.isEmpty) {
+      return "No date";
+    }
+    try {
+      // Convertir la chaîne en DateTime
+      DateTime parsedDate = DateTime.parse(dateString);
+
+      // Formater la date (par exemple, "dd MMM yyyy")
+      return DateFormat('dd MMM yyyy').format(parsedDate);
+    } catch (e) {
+      return "Invalid date"; // En cas d'erreur dans le formatage
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,9 +102,10 @@ String _formatDate(String? dateString) {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    "Yassine Ajbouni",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  Text(
+                    "${userName ?? 'Name'} ${userLastName ?? 'Last Name'}",
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   IconButton(
                     icon: const Icon(Icons.keyboard_arrow_down),
@@ -101,7 +123,7 @@ String _formatDate(String? dateString) {
                   Column(
                     children: [
                       Text(
-                        "100K",
+                        "0",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -119,7 +141,7 @@ String _formatDate(String? dateString) {
                   Column(
                     children: [
                       Text(
-                        "23.5K",
+                        "0",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -135,9 +157,10 @@ String _formatDate(String? dateString) {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    "Yassine Ajbouni",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  Text(
+                    "${userName ?? 'Name'} ${userLastName ?? 'Last Name'}",
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(width: 8),
                   const SizedBox(
@@ -148,10 +171,13 @@ String _formatDate(String? dateString) {
                       color: Color.fromARGB(255, 14, 13, 13),
                     ),
                   ),
-                  const Text(
-                    "Flutter Developer",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  const SizedBox(width: 8), // Ajouté pour l'espacement
+                  Text(
+                    "${userDomaine ?? 'Domaine'}",
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
                   ),
+                  const SizedBox(width: 8), // Ajouté pour l'espacement
                   IconButton(
                     icon: const Icon(
                       Icons.edit,
@@ -170,6 +196,7 @@ String _formatDate(String? dateString) {
                   ),
                 ],
               ),
+
               const SizedBox(height: 5),
               // Profile information and search bar
               Padding(
@@ -221,14 +248,16 @@ String _formatDate(String? dateString) {
                             );
                           },
                           child: Card(
-                            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
                             child: Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         post.title ?? "No Title",
@@ -237,7 +266,8 @@ String _formatDate(String? dateString) {
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      const Icon(Icons.keyboard_arrow_right, color: Colors.deepOrange),
+                                      const Icon(Icons.keyboard_arrow_right,
+                                          color: Colors.deepOrange),
                                     ],
                                   ),
                                   const SizedBox(height: 8),
@@ -270,8 +300,6 @@ String _formatDate(String? dateString) {
     );
   }
 }
-
-
 
 class CandidatesListScreen extends StatefulWidget {
   final int postIndex; // Accept postIndex as a parameter
@@ -323,13 +351,15 @@ class _CandidatesListScreenState extends State<CandidatesListScreen> {
               itemBuilder: (context, index) {
                 final candidate = snapshot.data![index];
                 return Card(
-                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: ListTile(
                     leading: CircleAvatar(
                       backgroundImage: NetworkImage(candidate.photoUrl),
                     ),
                     title: Text(candidate.fullName),
-                    subtitle: Text(candidate.id), // You can show more details here
+                    subtitle:
+                        Text(candidate.id), // You can show more details here
                     trailing: Text(
                       "Score: ${candidate.score}",
                       style: const TextStyle(fontWeight: FontWeight.bold),
@@ -344,8 +374,6 @@ class _CandidatesListScreenState extends State<CandidatesListScreen> {
     );
   }
 }
-
-
 
 class SurveyWidget extends StatelessWidget {
   const SurveyWidget({Key? key}) : super(key: key);
@@ -403,7 +431,9 @@ class SurveyWidget extends StatelessWidget {
                 },
                 child: const Text("Submit"),
               ),
-              const SizedBox(width: 100,)
+              const SizedBox(
+                width: 100,
+              )
             ],
           ),
         ),
@@ -411,4 +441,3 @@ class SurveyWidget extends StatelessWidget {
     );
   }
 }
-

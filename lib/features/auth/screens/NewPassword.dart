@@ -173,14 +173,16 @@ class NewPasswordScreen extends StatefulWidget {
 class _NewPasswordScreenState extends State<NewPasswordScreen> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
-  TextEditingController();
+      TextEditingController();
   bool isPasswordVisible = false;
   bool isConfirmPasswordVisible = false;
 
   // Fonction de réinitialisation du mot de passe
-  Future<Map<String, dynamic>> resetPassword(String resetToken, String newPassword) async {
+  Future<Map<String, dynamic>> resetPassword(
+      String resetToken, String newPassword) async {
     final response = await http.put(
-      Uri.parse("http://192.168.1.45:3000/auth/reset-password"), // Remplacez par l'URL réelle
+      Uri.parse(
+          "http://192.168.1.7:3000/auth/reset-password"), // Remplacez par l'URL réelle
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -198,7 +200,6 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
       print("objec ${response.body}response.");
       // Si la requête échoue, lancez une exception
       throw Exception('Failed to reset password');
-
     }
   }
 
@@ -304,16 +305,19 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                 child: ElevatedButton(
                   onPressed: () async {
                     // Vérifier si les mots de passe correspondent
-                    if (passwordController.text == confirmPasswordController.text) {
+                    if (passwordController.text ==
+                        confirmPasswordController.text) {
                       try {
                         print("11111111111111111111");
                         // Appel à la méthode de réinitialisation du mot de passe
-                        await resetPassword(widget.resetToken, passwordController.text);
+                        await resetPassword(
+                            widget.resetToken, passwordController.text);
 
                         // Si la réinitialisation réussit, rediriger vers la page de connexion
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => LoginScreen()),
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()),
                         );
                       } catch (e) {
                         print("object");
@@ -331,7 +335,8 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF130160),
-                    padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 120),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 120),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),

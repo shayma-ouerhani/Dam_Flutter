@@ -1,9 +1,7 @@
-
 import 'package:damdleaders_flutter/features/auth/screens/Forget_Password.dart';
 import 'package:damdleaders_flutter/features/auth/screens/register_screen.dart';
 import 'package:damdleaders_flutter/shared/login_text_fields.dart';
 import 'package:flutter/material.dart';
-
 
 import '../../../Controllers/AuthController.dart';
 import '../../Home/Screens/homeScreen.dart'; // Assurez-vous d'importer HomeScreen
@@ -23,17 +21,20 @@ class LoginScreen extends StatelessWidget {
     // Supposons que login retourne un LoginResponse
     var response = await authController.login(email, password);
 
-    if (response != null && response.statusCode == 200) {  // Vérifier si le code de réponse est 201
-      // Si la connexion réussit et que le code est 201, rediriger vers HomeScreen
+    if (response != null && response.statusCode == 200) {
+      // Si la connexion réussit, rediriger vers HomeScreen
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen()), // Assurez-vous que HomeScreen est défini
+        MaterialPageRoute(
+            builder: (context) =>
+                HomeScreen()), // Assurez-vous que HomeScreen est défini
       );
     } else {
       // Si la connexion échoue, afficher un message d'erreur
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Échec de la connexion. Vérifiez vos identifiants."),
+          content:
+              const Text("Échec de la connexion. Vérifiez vos identifiants."),
           backgroundColor: Colors.red,
         ),
       );
@@ -64,6 +65,7 @@ class LoginScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 18, color: Colors.grey),
               ),
               const SizedBox(height: 40),
+
               // Champ Email
               LoginTextField(
                 label: "E-mail",
@@ -77,6 +79,8 @@ class LoginScreen extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 16),
+
+              // Champ Password
               LoginTextField(
                 label: "Password",
                 controller: passwordController,
@@ -109,16 +113,16 @@ class LoginScreen extends StatelessWidget {
               ),
 
               // Bouton de connexion
-              Center(
+              SizedBox(
+                width: double.infinity, // Le bouton occupe toute la largeur
                 child: ElevatedButton(
                   onPressed: () {
                     handleLogin(context); // Appel de la méthode handleLogin
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF130160),
+                    backgroundColor: const Color(0xFF130160),
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 162),
+                    padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -133,6 +137,7 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
+
               // Lien pour l'inscription
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

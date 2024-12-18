@@ -1,16 +1,18 @@
 import 'dart:convert';
 import 'package:damdleaders_flutter/Models/Auth/LoginResponse.dart';
 import 'package:damdleaders_flutter/Models/Auth/RegisterResponse.dart';
+import 'package:damdleaders_flutter/config/UserPreference/User_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../Models/Auth/LoginResponse.dart';
 
 class AuthController {
   // URL de l'API backend pour la connexion et l'enregistrement
-  final String loginUrl = "http://192.168.1.45:3000/auth/login";
-  final String registerUrl = "http://192.168.1.45:3000/auth/signup";
-  final String api = "http://192.168.1.45:3000/auth";
+  final String loginUrl = "http://192.168.1.7:3000/auth/login";
+  final String registerUrl = "http://192.168.1.7:3000/auth/signup";
+  final String api = "http://192.168.1.7:3000/auth";
+
   /// Fonction pour effectuer une connexion
-  login(String email, String password) async {
+  Future<LoginResponse?> login(String email, String password) async {
     try {
       // Corps de la requête
       Map<String, String> body = {
@@ -27,17 +29,25 @@ class AuthController {
       print("we are in this step");
 
       // Vérification du code de réponse
-      if (response.statusCode == 201) {  // Vérification pour le code 201 (création réussie)
+      if (response.statusCode == 201) {
+        // Vérification pour le code 201 (création réussie)
         // Décodage de la réponse en JSON
-
         final jsonResponse = jsonDecode(response.body);
         print("we are in this step11yg(yy ${jsonResponse}");
-        // Conversion de la réponse JSON en objet LoginResponse
-        return LoginResponse.fromJson(jsonResponse);
+        final loginResponse = LoginResponse.fromJson(jsonResponse);
 
+        // Sauvegarder les informations dans UserPreference
+        await UserPreference.setEmail(email);
+        await UserPreference.setName(loginResponse.name);
+        await UserPreference.setLastName(loginResponse.lastname);
+        await UserPreference.setDomaine(loginResponse.domaine ?? '');
+        print(
+            "Utilisateur connecté : ${loginResponse.name}, ${loginResponse.lastname}, ${loginResponse.domaine}");
+        return loginResponse;
       } else {
-        print('Erreur lors de la connexion: ${response.statusCode} - ${response.body}');
-        return response;
+        print(
+            'Erreur lors de la connexion: ${response.statusCode} - ${response.body}');
+        return null;
       }
     } catch (e) {
       print('Exception lors de la connexion: $e');
@@ -46,7 +56,14 @@ class AuthController {
   }
 
   /// Fonction pour effectuer un enregistrement
-  Future<RegisterResponse?> register(String email, String password, String name, String lastname, String phoneNumber, String codePostal, String website) async {
+  Future<RegisterResponse?> register(
+      String email,
+      String password,
+      String name,
+      String lastname,
+      String phoneNumber,
+      String codePostal,
+      String website) async {
     try {
       // Corps de la requête
       Map<String, String> body = {
@@ -68,13 +85,15 @@ class AuthController {
       );
 
       // Vérification du code de réponse
-      if (response.statusCode == 201) { // Vérification pour le code 201 (création réussie)
+      if (response.statusCode == 201) {
+        // Vérification pour le code 201 (création réussie)
         // Décodage de la réponse en JSON
         final jsonResponse = jsonDecode(response.body);
         // Conversion de la réponse JSON en objet RegisterResponse
         return RegisterResponse.fromJson(jsonResponse);
       } else {
-        print('Erreur lors de l\'enregistrement: ${response.statusCode} - ${response.body}');
+        print(
+            'Erreur lors de l\'enregistrement: ${response.statusCode} - ${response.body}');
         return null;
       }
     } catch (e) {
@@ -82,7 +101,9 @@ class AuthController {
       return null;
     }
   }
-  Future<Map<String, dynamic>> resetPassword(String resetToken, String newPassword) async {
+
+  Future<Map<String, dynamic>> resetPassword(
+      String resetToken, String newPassword) async {
     final response = await http.put(
       Uri.parse("$api/reset-password"),
       headers: <String, String>{
@@ -101,8 +122,25 @@ class AuthController {
       // Si la requête échoue, lancez une exception
       throw Exception('Failed to reset password');
     }
-
   }
+
+  Future<String?> getUserName() async {
+    return await UserPreference.getName();
+  }
+
+  Future<String?> getUserLastName() async {
+    return await UserPreference.getLastName();
+  }
+
+  Future<String?> getUserDomaine() async {
+    return await UserPreference.getDomaine();
+  }
+
+  Future<String?> getUserEmail() async {
+    return await UserPreference.getEmail();
+  }
+
+  fetchUserData(String userId) {}
+
+  getCurrentUser() {}
 }
-
-

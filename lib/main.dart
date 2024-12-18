@@ -1,14 +1,14 @@
-import 'package:damdleaders_flutter/features/auth/screens/login_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart'; // Nécessaire pour Provider
-import 'package:shared_preferences/shared_preferences.dart'; // Nécessaire pour enregistrer les préférences
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Import des vues
+import 'features/auth/screens/login_screen.dart';
+import 'features/auth/screens/welcome_screen.dart';
 import 'features/Home/Screens/ProfileHomeView.dart';
 import 'features/Home/Screens/SettingsView.dart';
 import 'features/Home/Screens/homeScreen.dart';
 import 'features/Home/Screens/videoScreen.dart';
-import 'features/auth/screens/welcome_screen.dart';
 
 // Import du fournisseur de thème
 import 'config/theme/theme_provider.dart';
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
+    final themeProvider = context.watch<ThemeProvider>();
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -43,8 +43,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light(), // Thème clair par défaut
       darkTheme: ThemeData.dark(), // Thème sombre par défaut
       themeMode: themeProvider.themeMode, // Thème géré dynamiquement
-      //home: LoginScreen(), // Définit HomeScreen comme écran d'accueil
-      home: HomeScreen(),
+      home: LoginScreen(), // Écran d'accueil
     );
   }
 }

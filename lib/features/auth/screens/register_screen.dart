@@ -20,8 +20,7 @@ class RegisterScreen extends StatelessWidget {
     required String email,
     required String password,
   }) async {
-    const String apiUrl =
-        "http://192.168.1.45:3000/auth/signup"; 
+    const String apiUrl = "http://192.168.1.7:3000/auth/signup";
 
     try {
       final response = await http.post(
