@@ -220,32 +220,21 @@ class _SettingsViewState extends State<SettingsView> {
                                         ),
                                       ),
                                       const SizedBox(width: 55),
-                                      // ElevatedButton(
-                                      //   onPressed: () {
-                                      //     UserPreference.setUserLoggedIn(true); // Marquer l'utilisateur comme connecté
-                                      //     Navigator.of(context).pop();
-                                      //     // Add logout logic here
-                                      //   },
-                                      //   child: const Text(
-                                      //     'Logout',
-                                      //     style: TextStyle(color: Colors.red),
-                                      //   ),
-                                      // ),
                                       ElevatedButton(
-  onPressed: () {
-    UserPreference.setUserLoggedIn(false); // Mark the user as logged out
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => LoginScreen()), // Navigate to the login screen
-    );
-    Navigator.of(context).pop(); // Close the current screen (optional)
-  },
-  child: const Text(
-    'Logout',
-    style: TextStyle(color: Colors.red),
-  ),
-)
-
+                                        onPressed: () {
+                                          UserPreference.setUserLoggedIn(false); // Mark the user as logged out
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>  LoginScreen(),
+                                            ),
+                                          );
+                                        },
+                                        child: const Text(
+                                          'Logout',
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                      )
                                     ],
                                   ),
                                 ],
