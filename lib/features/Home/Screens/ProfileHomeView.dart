@@ -628,8 +628,6 @@ class _ProfileHomeViewState extends State<ProfileHomeView> {
       userDomaine = await UserPreference.getDomaine();
       userId = await UserPreference.getUserId();
       photoUrl = await UserPreference.getPhotoUrl();
-      print(photoUrl);
-      print("****************************************************************************************-*********************************************************************************************");
       mesPosts = postService.fetchMyPosts(userId!);
 
       // Attend la récupération des posts

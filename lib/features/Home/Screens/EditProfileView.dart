@@ -1,4 +1,5 @@
 import 'package:damdleaders_flutter/Controllers/HomeController.dart';
+import 'package:damdleaders_flutter/config/UserPreference/User_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -29,6 +30,18 @@ class _EditProfileState extends State<EditProfileView> {
   bool _isEditingSkill = false;
   bool _isEditingResume = false;
 
+// Variables pour stocker les informations utilisateur
+  String? userName;
+  String? userLastName;
+  String? userDomaine;
+  String? userId;
+  String? photoUrl;
+  String? userEmail;
+  String? userPhoneNumber;
+  String? userGithub;
+  bool isLoadingUserData = true; // Indicateur de chargement
+
+
   @override
   void dispose() {
     _firstNameController.dispose();
@@ -45,6 +58,7 @@ class _EditProfileState extends State<EditProfileView> {
   void initState() {
     super.initState();
     _loadUserData();
+    
   }
 
   Future<void> _pickImage() async {
@@ -73,17 +87,18 @@ class _EditProfileState extends State<EditProfileView> {
     }
   }
 
-  Future<void> _saveProfile() async {
+  Future<void> _saveProfile(id) async {
     try {
-      final user = _authController.getCurrentUser();
+      /*final user = _authController.getCurrentUser();
       if (user == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("No user is currently logged in.")),
         );
         return;
-      }
+      }*/
 
-      final userId = user.uid;
+      final userId = id;
+      //final userId = user.uid;
       final profileData = {
         "name": _firstNameController.text.isNotEmpty
             ? _firstNameController.text
@@ -93,6 +108,12 @@ class _EditProfileState extends State<EditProfileView> {
             : null,
         "email":
             _emailController.text.isNotEmpty ? _emailController.text : null,
+        "domaine":
+            _domainController.text.isNotEmpty ? _domainController.text : null,
+        "website":
+            _githubController.text.isNotEmpty ? _githubController.text : null,
+        "phoneNumber":
+            _phoneNumberController.text.isNotEmpty ? _phoneNumberController.text : null,
       };
 
       final response = await _homeController.updateUserProfile(
@@ -113,28 +134,40 @@ class _EditProfileState extends State<EditProfileView> {
     }
   }
 
-  Future<void> _loadUserData() async {
-    try {
-      final user = _authController.getCurrentUser();
-      if (user != null) {
-        final userId = user.uid;
-        final userData = await _authController.fetchUserData(userId);
-        setState(() {
-          _firstNameController.text = userData['name'] ?? '';
-          _lastNameController.text = userData['lastname'] ?? '';
-          _emailController.text = userData['email'] ?? '';
-        });
-      } else {
-        print("No user is currently logged in.");
-      }
-    } catch (e) {
-      print("Error loading user data: $e");
-    } finally {
+Future<void> _loadUserData() async {
+  try {
+    // Attempt to get user data from preferences
+    userName = await UserPreference.getName();
+    userLastName = await UserPreference.getLastName();
+    userDomaine = await UserPreference.getDomaine();
+    userEmail = await UserPreference.getEmail();
+    userId = await UserPreference.getUserId();
+    photoUrl = await UserPreference.getPhotoUrl();
+    userGithub = await UserPreference.getWebsite();
+    userPhoneNumber = await UserPreference.getPhoneNumber();
+    // Debug print statements
+    print('userName: $userName');
+    print('userLastName: $userLastName');
+    print('userDomaine: $userDomaine');
+  } catch (e) {
+    print("Erreur lors de la récupération des données utilisateur : $e");
+  } finally {
+    // Make sure to check if the widget is still mounted before calling setState
+    if (mounted) {
       setState(() {
-        // _isLoading = false;
+        isLoadingUserData = false;
+        // Set the text of the controller if the value is not null
+        _firstNameController.text = userName ?? ''; // Safe fallback
+        _lastNameController.text = userLastName ?? '';
+        _emailController.text = userEmail ?? '';
+        _domainController.text = userDomaine ?? '';
+        _githubController.text = userGithub ?? '';
+        _phoneNumberController.text = userPhoneNumber ?? '';
       });
     }
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -163,17 +196,31 @@ class _EditProfileState extends State<EditProfileView> {
                       children: [
                         GestureDetector(
                           onTap: _pickImage,
-                          child: CircleAvatar(
+                          child: 
+                          CircleAvatar(
+                            radius: 35,
+                            backgroundImage: photoUrl != null && photoUrl!.isNotEmpty
+                                ? NetworkImage(photoUrl!)
+                                : null,
+                            child: photoUrl == null || photoUrl!.isEmpty
+                                ? Icon(Icons.person, size: 30) // Placeholder
+                                : null,
+                            onBackgroundImageError: (_, __) {
+                              print('Failed to load image');
+                            },
+                          ),
+                          /*CircleAvatar(
                             radius: 50,
                             backgroundImage: _selectedImage != null
                                 ? FileImage(_selectedImage!)
                                 : const AssetImage('assets/yassineImage.jpg')
                                     as ImageProvider,
-                          ),
+                          ),*/
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          "${_firstNameController.text} ${_lastNameController.text}",
+                          //"${_firstNameController.text} ${_lastNameController.text}",
+                          "${userName ?? 'Name'} ${userLastName ?? 'Last Name'}",
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -359,7 +406,9 @@ class _EditProfileState extends State<EditProfileView> {
               ),
 
               ElevatedButton(
-                onPressed: _saveProfile, // Save Profile
+                onPressed: () async {
+                  await _saveProfile(userId); // Save Profile asynchronously
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 48, 0, 131),
                   minimumSize: const Size(300, 50),

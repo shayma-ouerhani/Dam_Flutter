@@ -150,8 +150,10 @@ class AuthController {
         await UserPreference.setName(loginResponse.name);
         await UserPreference.setLastName(loginResponse.lastname);
         await UserPreference.setDomaine(loginResponse.domaine ?? '');
+        await UserPreference.setWebsite(loginResponse.website ?? '');
         await UserPreference.setPhotoUrl(loginResponse.photoUrl ?? '');
-        print(UserPreference.getPhotoUrl());
+        print("UserPreference.getPhotoUrl()----------------------------------------------------------");
+        print(UserPreference.getWebsite());
         print("UserPreference.getPhotoUrl()----------------------------------------------------------");
         await UserPreference.setPhoneNumber(loginResponse.phoneNumber ?? '');
         await UserPreference.setUserId(loginResponse.userId);

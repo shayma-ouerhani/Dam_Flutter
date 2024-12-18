@@ -149,7 +149,7 @@ Future<Map<String, dynamic>> fetchApplicationsPerPost(String userId) async {
   // Method to update user profile
   Future<Map<String, dynamic>> updateUserProfile(
       String userId, Map<String, dynamic> profileData, File? photo) async {
-    final String updateProfileUrl = "$apiUrl/user/67322ac07b0ef3c99e6a288c";
+    final String updateProfileUrl = "$apiUrl/user/update/$userId";
 
     try {
       var request = http.MultipartRequest('PUT', Uri.parse(updateProfileUrl));
