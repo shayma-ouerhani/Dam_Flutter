@@ -116,9 +116,9 @@ import '../Models/Auth/LoginResponse.dart';
 
 class AuthController {
   // URL de l'API backend pour la connexion et l'enregistrement
-  final String loginUrl = "http://192.168.55.132:3000/auth/login";
-  final String registerUrl = "http://192.168.55.132:3000/auth/signup";
-  final String api = "http://192.168.55.132:3000/auth";
+  final String loginUrl = "http://192.168.0.101:3000/auth/login";
+  final String registerUrl = "http://192.168.0.101:3000/auth/signup";
+  final String api = "http://192.168.0.101:3000/auth";
 
   /// Fonction pour effectuer une connexion
   Future<LoginResponse?> login(String email, String password) async {
