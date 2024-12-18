@@ -657,12 +657,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
   bool isLoadingUserData = true;
 
-  late NotificationLocal notificationLocal;
+  // late NotificationLocal notificationLocal;
 
   @override
   void initState() {
     super.initState();
-    notificationLocal = NotificationLocal(); // Pas besoin d'appeler initialize()
+    // notificationLocal = NotificationLocal(); // Pas besoin d'appeler initialize()
     _loadUserData();
   }
 

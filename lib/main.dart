@@ -97,7 +97,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light(), // Thème clair par défaut
       darkTheme: ThemeData.dark(), // Thème sombre par défaut
       themeMode: themeProvider.themeMode, // Thème géré dynamiquement
-      home: isLoggedIn ? HomeScreen() : LoginScreen(), // Redirection en fonction de l'état de connexion
+      home: isLoggedIn ? HomeScreen() : WelcomeScreen(), // Redirection en fonction de l'état de connexion
     );
   }
 }

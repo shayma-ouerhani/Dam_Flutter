@@ -1,4 +1,3 @@
-
 import 'package:damdleaders_flutter/config/UserPreference/User_preferences.dart';
 import 'package:damdleaders_flutter/config/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +16,7 @@ class _SettingsViewState extends State<SettingsView> {
   String? userEmail;
   bool isLoadingUserData = true;
   String? photoUrl;
+  String? userId;
 
   @override
   void initState() {
@@ -29,7 +29,8 @@ class _SettingsViewState extends State<SettingsView> {
       userName = await UserPreference.getName();
       userLastName = await UserPreference.getLastName();
       userEmail = await UserPreference.getEmail();
-      photoUrl = await UserPreference.getPhotoUrl();
+      userId = await UserPreference.getUserId();
+      //photoUrl = await UserPreference.getPhotoUrl();
     } catch (e) {
       print("Erreur lors de la récupération des données utilisateur : $e");
     } finally {
@@ -294,3 +295,5 @@ class _SettingsViewState extends State<SettingsView> {
     );
   }
 }
+
+
