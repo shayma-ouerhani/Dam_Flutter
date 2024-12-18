@@ -662,7 +662,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
   @override
   void initState() {
     super.initState();
-    notificationLocal = NotificationLocal(); // Initialisation de notificationLocal
+    notificationLocal = NotificationLocal(); // Pas besoin d'appeler initialize()
     _loadUserData();
   }
 
@@ -823,17 +823,13 @@ class _AddPostScreenState extends State<AddPostScreen> {
                           title.isNotEmpty &&
                           description.isNotEmpty) {
 
-                        // Affichage de la notification de début de l'upload
-                        await notificationLocal.showNotification(
-                          'upload en cours',
-                          'Chargement de la vidéo...',
-                          50,
-                        );
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomeScreen()),
-                        );
+                        // // Affichage de la notification de début de l'upload
+                        // await notificationLocal.showNotification(
+                        //   'upload en cours',
+                        //   'Chargement de la vidéo...',
+                        //   50,
+                        // );
+
 
                         try {
                           // Envoi de la requête addPost
@@ -843,21 +839,26 @@ class _AddPostScreenState extends State<AddPostScreen> {
                             user: userId!,
                             videoFile: _selectedVideo!,
                           );
-
-                          // Notification de succès après l'upload
-                          await notificationLocal.showNotification(
-                            'upload success',
-                            'Upload réussi!',
-                            100,
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomeScreen()),
                           );
+
+                          // // Notification de succès après l'upload
+                          // await notificationLocal.showNotification(
+                          //   'upload success',
+                          //   'Upload réussi!',
+                          //   100,
+                          // );
                         } catch (e) {
                           // En cas d'erreur lors de l'envoi du post
                           print('Erreur lors de l\'ajout du post: $e');
-                          await notificationLocal.showNotification(
-                            'upload failed',
-                            'Échec de l\'upload',
-                            0,
-                          );
+                          // await notificationLocal.showNotification(
+                          //   'upload failed',
+                          //   'Échec de l\'upload',
+                          //   0,
+                          // );
                         }
                       } else {
                         print("Veuillez remplir tous les champs et sélectionner une vidéo.");
