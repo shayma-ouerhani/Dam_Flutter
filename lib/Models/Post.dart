@@ -12,7 +12,7 @@
 //   final String userName;
 //   final String photoUrl;
 //   final String? videoUrl;
-//
+
 //   Post({
 //     required this.id,
 //     required this.title,
@@ -28,7 +28,7 @@
 //     required this.photoUrl,
 //     this.videoUrl,
 //   });
-//
+
 //   // Méthode pour convertir un JSON en objet Post
 //   factory Post.fromJson(Map<String, dynamic> json) {
 //     return Post(
@@ -47,6 +47,27 @@
 //       videoUrl: json['videoUrl'],
 //     );
 //   }
+
+//   // Méthode pour convertir un objet Post en JSON
+//   Map<String, dynamic> toJson() {
+//     return {
+//       '_id': id,
+//       'title': title,
+//       'content': content,
+//       'videos': videos,
+//       'type': type,
+//       'commentaires': commentaires,
+//       'nbLikes': nbLikes,
+//       'user': user,
+//       'createdAt': createdAt,
+//       'updatedAt': updatedAt,
+//       'userName': userName,
+//       'photoUrl': photoUrl,
+//       'videoUrl': videoUrl,
+//     };
+//   }
+
+
 // }
 class Post {
   final String id;
@@ -62,6 +83,7 @@ class Post {
   final String userName;
   final String photoUrl;
   final String? videoUrl;
+  final List<String> survey; // Added survey property
 
   Post({
     required this.id,
@@ -77,9 +99,10 @@ class Post {
     required this.userName,
     required this.photoUrl,
     this.videoUrl,
+    required this.survey, // Initialize survey
   });
 
-  // Méthode pour convertir un JSON en objet Post
+  // Convert JSON to Post object
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
       id: json['_id'],
@@ -95,10 +118,12 @@ class Post {
       userName: json['userName'] ?? '',
       photoUrl: json['photoUrl'] ?? '',
       videoUrl: json['videoUrl'],
+      survey: json['survey'] is List ? List<String>.from(json['survey']) : [],
+      //survey: List<String>.from(json['survey'] ?? []), // Ensure it's a list of strings
     );
   }
 
-  // Méthode pour convertir un objet Post en JSON
+  // Convert Post object to JSON
   Map<String, dynamic> toJson() {
     return {
       '_id': id,
@@ -114,6 +139,7 @@ class Post {
       'userName': userName,
       'photoUrl': photoUrl,
       'videoUrl': videoUrl,
+      'survey': survey, // Include survey in JSON
     };
   }
 }

@@ -7,11 +7,11 @@ import 'package:http_parser/http_parser.dart';  // Import pour MediaType
 import 'package:mime/mime.dart';  // Import pour lookupMimeType
 
 class HomeController {
-  final String apiUrl = "http://192.168.1.129:3000"; // URL de l'API backend
+  final String apiUrl = "http://192.168.1.23:3000"; // URL de l'API backend
 
   // Méthode pour récupérer tous les posts
     Future<List<Post>> fetchVideos() async {
-       print("11111111111111111111111111111111111111111111111111111111111111111111");
+      // print("11111111111111111111111111111111111111111111111111111111111111111111");
       try {
         final response = await http.get(Uri.parse('$apiUrl/post'));
 
@@ -56,6 +56,66 @@ class HomeController {
     }
   }
 
+  // Méthode pour récupérer les candidats par ID de publication
+  Future<List<Candidat>> fetchCandidatesByPost(String postId) async {
+    final String apiUrl1 = "$apiUrl/postuler/usersByPost/$postId"; // L'URL de l'API backend
+
+    try {
+      final response = await http.get(Uri.parse(apiUrl1));
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        print("------------------------data-----------------------------");
+        print(data);
+        print("-----------------------------------------------------");
+
+        // Retourner une liste d'objets Candidate
+        return data.map((json) => Candidat.fromJson(json)).toList();
+      } else {
+        throw Exception("Failed to load candidates");
+      }
+    } catch (e) {
+      throw Exception("Error fetching candidates: $e");
+    }
+  }
+
+// Method to fetch the survey based on the postId
+Future<Survey> fetchSurveyByPost(String postId) async {
+  final String apiUrl3 = "$apiUrl/post/survey/$postId"; // Replace with actual API URL
+
+  try {
+    final response = await http.get(Uri.parse(apiUrl3));
+
+    if (response.statusCode == 200) {
+  final List<dynamic> data = json.decode(response.body);
+  return Survey(questions: List<String>.from(data));
+    } else {
+      throw Exception("Failed to load survey: ${response.body}");
+    }
+  } catch (e) {
+    throw Exception("Error fetching survey: $e");
+  }
+}
+
+// Fetching stats for a user
+Future<List<Stats>> fetchApplicationsPerPost(String userId) async {
+  final String apiUrl1 = "$apiUrl/postuler/stats/$userId"; // Corrected endpoint
+  try {
+    final response = await http.get(Uri.parse(apiUrl1));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+
+      // Parse JSON into a list of Stats objects
+      return data.map((jsonItem) => Stats.fromJson(jsonItem)).toList();
+    } else {
+      throw Exception("Failed to load Stats: ${response.statusCode} - ${response.body}");
+    }
+  } catch (e) {
+    throw Exception("Error fetching stats: $e");
+  }
+}
+/************************** */
 
   // Method to update user profile
   Future<Map<String, dynamic>> updateUserProfile(
@@ -95,6 +155,7 @@ class HomeController {
       print("tneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeket:");
       print("Error updating profile: $e");
       throw Exception("Error updating profile: $e");
+              
 
     }
   }
@@ -141,6 +202,7 @@ class HomeController {
       print("Erreur : $e");
     }
   }
+
 
 }
 
