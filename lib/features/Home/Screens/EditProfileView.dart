@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:damdleaders_flutter/Controllers/AuthController.dart';
 
 class EditProfileView extends StatefulWidget {
   @override
@@ -10,7 +11,10 @@ class EditProfileView extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfileView> {
-  final HomeController _homeController = HomeController(); // Instance of API controller
+  final HomeController _homeController =
+      HomeController(); // Instance of API controller
+  final AuthController _authController = AuthController();
+
   File? _selectedImage;
   File? _selectedPdfFile;
 
@@ -30,8 +34,17 @@ class _EditProfileState extends State<EditProfileView> {
     _firstNameController.dispose();
     _lastNameController.dispose();
     _emailController.dispose();
+    _domainController.dispose();
     _phoneNumberController.dispose();
+    _githubController.dispose();
+
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
   }
 
   Future<void> _pickImage() async {
@@ -62,33 +75,64 @@ class _EditProfileState extends State<EditProfileView> {
 
   Future<void> _saveProfile() async {
     try {
-      String userId = "674cabd54603d2eeb31c56e3"; // Replace with the actual user ID
-      Map<String, dynamic> profileData = {
-        "name": _firstNameController.text,
-        // "lastname": _lastNameController.text,
-        // "email": _emailController.text,
-        // "phoneNumber": _phoneNumberController.text,
-        // "domaine": _domainController.text,  // Add domain
-        // "website": _githubController.text,  // Add GitHub
+      final user = _authController.getCurrentUser();
+      if (user == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("No user is currently logged in.")),
+        );
+        return;
+      }
+
+      final userId = user.uid;
+      final profileData = {
+        "name": _firstNameController.text.isNotEmpty
+            ? _firstNameController.text
+            : null,
+        "lastname": _lastNameController.text.isNotEmpty
+            ? _lastNameController.text
+            : null,
+        "email":
+            _emailController.text.isNotEmpty ? _emailController.text : null,
       };
 
-      // Call the API
-      var response = await _homeController.updateUserProfile(
+      final response = await _homeController.updateUserProfile(
         userId,
         profileData,
         _selectedImage,
       );
 
-      // Handle the API response
       if (response.isNotEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Profile updated successfully!")),
+          const SnackBar(content: Text("Profile updated successfully!")),
         );
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error updating profile: $e")),
       );
+    }
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      final user = _authController.getCurrentUser();
+      if (user != null) {
+        final userId = user.uid;
+        final userData = await _authController.fetchUserData(userId);
+        setState(() {
+          _firstNameController.text = userData['name'] ?? '';
+          _lastNameController.text = userData['lastname'] ?? '';
+          _emailController.text = userData['email'] ?? '';
+        });
+      } else {
+        print("No user is currently logged in.");
+      }
+    } catch (e) {
+      print("Error loading user data: $e");
+    } finally {
+      setState(() {
+        // _isLoading = false;
+      });
     }
   }
 
@@ -123,34 +167,29 @@ class _EditProfileState extends State<EditProfileView> {
                             radius: 50,
                             backgroundImage: _selectedImage != null
                                 ? FileImage(_selectedImage!)
-                                : const AssetImage('assets/yassineImage.jpg') as ImageProvider,
+                                : const AssetImage('assets/yassineImage.jpg')
+                                    as ImageProvider,
                           ),
                         ),
                         const SizedBox(height: 10),
-                        const Text(
-                          'Yassine Ajbouni',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
+                        Text(
+                          "${_firstNameController.text} ${_lastNameController.text}",
+                          style: const TextStyle(
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
+                            color: Colors.white,
                           ),
                         ),
                         const SizedBox(height: 5),
-                        const Text(
-                          'Yassine.Ajbouni@esprit.tn',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 16,
+                        Text(
+                          _domainController.text,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
                           ),
                         ),
                         const SizedBox(height: 5),
-                        const Text(
-                          'Tunisia, Tunis',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 14,
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -196,13 +235,16 @@ class _EditProfileState extends State<EditProfileView> {
                               SizedBox(width: 8),
                               Text(
                                 'ABOUT ME',
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
                           IconButton(
                             icon: Icon(
-                              _isEditingAboutMe ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                              _isEditingAboutMe
+                                  ? Icons.keyboard_arrow_up
+                                  : Icons.keyboard_arrow_down,
                             ),
                             onPressed: () {
                               setState(() {
@@ -273,13 +315,16 @@ class _EditProfileState extends State<EditProfileView> {
                               SizedBox(width: 8),
                               Text(
                                 'Skill',
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
                           IconButton(
                             icon: Icon(
-                              _isEditingSkill ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                              _isEditingSkill
+                                  ? Icons.keyboard_arrow_up
+                                  : Icons.keyboard_arrow_down,
                             ),
                             onPressed: () {
                               setState(() {
@@ -292,7 +337,7 @@ class _EditProfileState extends State<EditProfileView> {
                       if (_isEditingSkill) ...[
                         const SizedBox(height: 10),
                         TextField(
-                          controller: _domainController, 
+                          controller: _domainController,
                           decoration: const InputDecoration(
                             labelText: 'Domain',
                             border: OutlineInputBorder(),
@@ -300,7 +345,7 @@ class _EditProfileState extends State<EditProfileView> {
                         ),
                         const SizedBox(height: 10),
                         TextField(
-                          controller: _githubController, 
+                          controller: _githubController,
                           decoration: const InputDecoration(
                             labelText: 'GitHub',
                             border: OutlineInputBorder(),
@@ -312,77 +357,6 @@ class _EditProfileState extends State<EditProfileView> {
                   ),
                 ),
               ),
-
-              // Resume Card
-              // Card(
-              //   margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              //   child: Padding(
-              //     padding: const EdgeInsets.all(16.0),
-              //     child: Column(
-              //       crossAxisAlignment: CrossAxisAlignment.start,
-              //       children: [
-              //         Row(
-              //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //           children: [
-              //             const Row(
-              //               children: [
-              //                 Icon(
-              //                   Icons.description,
-              //                   size: 24.0,
-              //                   color: Colors.deepOrange,
-              //                 ),
-              //                 SizedBox(width: 8),
-              //                 Text(
-              //                   'Resume',
-              //                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              //                 ),
-              //               ],
-              //             ),
-              //             IconButton(
-              //               icon: Icon(
-              //                 _isEditingResume ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-              //               ),
-              //               onPressed: () {
-              //                 setState(() {
-              //                   _isEditingResume = !_isEditingResume;
-              //                 });
-              //               },
-              //             ),
-              //           ],
-              //         ),
-              //         if (_isEditingResume) ...[
-              //           const SizedBox(height: 10),
-              //           Row(
-              //             children: [
-              //               Expanded(
-              //                 child: Container(
-              //                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-              //                   decoration: BoxDecoration(
-              //                     border: Border.all(color: Colors.grey),
-              //                     borderRadius: BorderRadius.circular(8),
-              //                     color: Colors.white,
-              //                   ),
-              //                   child: Text(
-              //                     _selectedPdfFile != null
-              //                         ? _selectedPdfFile!.path.split('/').last
-              //                         : 'No file selected',
-              //                     style: const TextStyle(fontSize: 16, color: Colors.black54),
-              //                   ),
-              //                 ),
-              //               ),
-              //               const SizedBox(width: 10),
-              //               IconButton(
-              //                 icon: const Icon(Icons.upload_file_rounded),
-              //                 onPressed: _pickPdf,
-              //               ),
-              //             ],
-              //           ),
-              //           const SizedBox(height: 10),
-              //         ]
-              //       ],
-              //     ),
-              //   ),
-              // ),
 
               ElevatedButton(
                 onPressed: _saveProfile, // Save Profile

@@ -131,7 +131,7 @@ class AuthController {
 
       // Envoi de la requête POST
       final response = await http.post(
-        Uri.parse(loginUrl),
+        Uri.parse('$api/login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(body),
       );
@@ -150,8 +150,14 @@ class AuthController {
         await UserPreference.setName(loginResponse.name);
         await UserPreference.setLastName(loginResponse.lastname);
         await UserPreference.setDomaine(loginResponse.domaine ?? '');
+        await UserPreference.setPhotoUrl(loginResponse.photoUrl ?? '');
+        print(UserPreference.getPhotoUrl());
+        print("UserPreference.getPhotoUrl()----------------------------------------------------------");
+        await UserPreference.setPhoneNumber(loginResponse.phoneNumber ?? '');
+        await UserPreference.setUserId(loginResponse.userId);
+        await UserPreference.setUserLoggedIn(true); // Marquer l'utilisateur comme connecté
         print(
-            "Utilisateur connecté : ${loginResponse.name}, ${loginResponse.lastname}, ${loginResponse.domaine}");
+            "Utilisateur connecté : ${loginResponse.name}, ${loginResponse.photoUrl},${loginResponse.lastname}, ${loginResponse.domaine}");
         return loginResponse;
       } else {
         print(
@@ -188,7 +194,7 @@ class AuthController {
 
       // Envoi de la requête POST pour l'enregistrement
       final response = await http.post(
-        Uri.parse(registerUrl),
+        Uri.parse('$api/signup'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(body),
       );
@@ -244,4 +250,12 @@ class AuthController {
   Future<String?> getUserDomaine() async {
     return await UserPreference.getDomaine();
   }
+
+  Future<String?> getUserEmail() async {
+    return await UserPreference.getEmail();
+  }
+
+  fetchUserData(String userId) {}
+
+  getCurrentUser() {}
 }
