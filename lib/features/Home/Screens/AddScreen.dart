@@ -66,6 +66,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
       userName = await UserPreference.getName();
       userLastName = await UserPreference.getLastName();
       userDomaine = await UserPreference.getDomaine();
+      photoUrl = await UserPreference.getPhotoUrl();
     } catch (e) {
       print("Erreur lors de la récupération des données utilisateur : $e");
     } finally {

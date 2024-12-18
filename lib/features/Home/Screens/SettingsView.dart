@@ -1,5 +1,6 @@
 import 'package:damdleaders_flutter/config/UserPreference/User_preferences.dart';
 import 'package:damdleaders_flutter/config/theme/theme_provider.dart';
+import 'package:damdleaders_flutter/features/auth/screens/login_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +29,7 @@ class _SettingsViewState extends State<SettingsView> {
       userName = await UserPreference.getName();
       userLastName = await UserPreference.getLastName();
       userEmail = await UserPreference.getEmail();
-      //photoUrl = await UserPreference.getPhotoUrl();
+      photoUrl = await UserPreference.getPhotoUrl();
     } catch (e) {
       print("Erreur lors de la récupération des données utilisateur : $e");
     } finally {
@@ -219,16 +220,32 @@ class _SettingsViewState extends State<SettingsView> {
                                         ),
                                       ),
                                       const SizedBox(width: 55),
+                                      // ElevatedButton(
+                                      //   onPressed: () {
+                                      //     UserPreference.setUserLoggedIn(true); // Marquer l'utilisateur comme connecté
+                                      //     Navigator.of(context).pop();
+                                      //     // Add logout logic here
+                                      //   },
+                                      //   child: const Text(
+                                      //     'Logout',
+                                      //     style: TextStyle(color: Colors.red),
+                                      //   ),
+                                      // ),
                                       ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                          // Add logout logic here
-                                        },
-                                        child: const Text(
-                                          'Logout',
-                                          style: TextStyle(color: Colors.red),
-                                        ),
-                                      ),
+  onPressed: () {
+    UserPreference.setUserLoggedIn(false); // Mark the user as logged out
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()), // Navigate to the login screen
+    );
+    Navigator.of(context).pop(); // Close the current screen (optional)
+  },
+  child: const Text(
+    'Logout',
+    style: TextStyle(color: Colors.red),
+  ),
+)
+
                                     ],
                                   ),
                                 ],

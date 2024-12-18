@@ -723,7 +723,7 @@ class _ProfileHomeViewState extends State<ProfileHomeView> {
                   ),*/
                   
                   CircleAvatar(
-                    radius: 25,
+                    radius: 35,
                     backgroundImage: photoUrl != null && photoUrl!.isNotEmpty
                         ? NetworkImage(photoUrl!)
                         : null,
