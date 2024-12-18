@@ -1,16 +1,46 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers
 
+import 'package:damdleaders_flutter/config/UserPreference/User_preferences.dart';
 import 'package:damdleaders_flutter/config/theme/theme_provider.dart';
-import 'package:provider/provider.dart'; // Si vous utilisez Provider pour gérer l'état
-
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
-class SettingsView extends StatelessWidget {
+class SettingsView extends StatefulWidget {
+  const SettingsView({Key? key}) : super(key: key);
+
+  @override
+  _SettingsViewState createState() => _SettingsViewState();
+}
+
+class _SettingsViewState extends State<SettingsView> {
+  String? userName;
+  String? userLastName;
+  String? userEmail;
+  bool isLoadingUserData = true;
+  String? photoUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      userName = await UserPreference.getName();
+      userLastName = await UserPreference.getLastName();
+      userEmail = await UserPreference.getEmail();
+      photoUrl = await UserPreference.getPhotoUrl();
+    } catch (e) {
+      print("Erreur lors de la récupération des données utilisateur : $e");
+    } finally {
+      setState(() {
+        isLoadingUserData = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final themeProvider =
-        Provider.of<ThemeProvider>(context); // Accès au ThemeProvider
-
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -31,55 +61,39 @@ class SettingsView extends StatelessWidget {
                     bottomRight: Radius.circular(20),
                   ),
                 ),
-                child: const Column(
+                child: Column(
                   children: [
                     CircleAvatar(
                       radius: 50,
-                      backgroundImage: AssetImage('assets/yassineImage.jpg')
-                          as ImageProvider,
+                      backgroundImage: photoUrl != null
+                          ? NetworkImage(photoUrl!) // Utiliser NetworkImage pour une URL
+                          : AssetImage('assets/yassineImage.jpg') as ImageProvider, // Image par défaut
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Text(
-                      'Ajbouni Yassine',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
+                      "${userName ?? 'Name'} ${userLastName ?? ''}",
+                      style: const TextStyle(
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Text(
-                      'yassine.ajbouni@esprit.tn',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 16,
+                      userEmail ?? 'email@example.com',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
-                    SizedBox(height: 5),
-                    Text(
-                      'Tunisia, Tunis',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 14,
-                      ),
-                    ),
+                    const SizedBox(height: 5),
                   ],
                 ),
               ),
               const SizedBox(height: 20),
 
-              //const Divider(),
               // Dark Mode Toggle
-              // ListTile(
-              //   leading: const Icon(Icons.dark_mode),
-              //   title: const Text('Dark mode'),
-              //   trailing: Switch(
-              //     value: false,
-              //     onChanged: (bool value) {
-              //       // Handle dark mode toggle
-              //     },
-              //   ),
-              // ),
               Card(
                 margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Padding(
@@ -88,7 +102,6 @@ class SettingsView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Row(
-                        // Suppression du const pour permettre la dynamique
                         children: [
                           Icon(
                             Icons.dark_mode,
@@ -105,11 +118,9 @@ class SettingsView extends StatelessWidget {
                       Consumer<ThemeProvider>(
                         builder: (context, themeProvider, _) {
                           return Switch(
-                            value: themeProvider
-                                .isDarkMode, // Utilisation de la valeur actuelle du thème
+                            value: themeProvider.isDarkMode,
                             onChanged: (bool value) {
-                              themeProvider.toggleTheme(
-                                  value); // Basculer entre clair et sombre
+                              themeProvider.toggleTheme(value);
                             },
                           );
                         },
@@ -119,6 +130,7 @@ class SettingsView extends StatelessWidget {
                 ),
               ),
 
+              // Password Update
               Card(
                 margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Padding(
@@ -151,7 +163,7 @@ class SettingsView extends StatelessWidget {
                 ),
               ),
 
-              //const Divider(),
+              // Logout
               Card(
                 margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Padding(
@@ -176,7 +188,6 @@ class SettingsView extends StatelessWidget {
                       IconButton(
                         icon: const Icon(Icons.arrow_forward_ios),
                         onPressed: () {
-                          // Show confirmation dialog
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -189,7 +200,6 @@ class SettingsView extends StatelessWidget {
                                     children: [
                                       TextButton(
                                         onPressed: () {
-                                          // Close the dialog
                                           Navigator.of(context).pop();
                                         },
                                         child: const Text(
@@ -200,10 +210,8 @@ class SettingsView extends StatelessWidget {
                                       const SizedBox(width: 55),
                                       ElevatedButton(
                                         onPressed: () {
-                                          // Handle the logout logic here
-                                          Navigator.of(context)
-                                              .pop(); // Close the dialog
-                                          // Add your logout logic
+                                          Navigator.of(context).pop();
+                                          // Add logout logic here
                                         },
                                         child: const Text(
                                           'Logout',
@@ -222,198 +230,67 @@ class SettingsView extends StatelessWidget {
                   ),
                 ),
               ),
-
-              // Logout Option
-              // ListTile(
-              //   leading: const Icon(Icons.logout),
-              //   title: const Text('Logout'),
-              //   trailing: const Icon(Icons.arrow_forward_ios),
-              //   onTap: () {
-              //     // Show confirmation dialog
-              //     showDialog(
-              //       context: context,
-              //       builder: (BuildContext context) {
-              //         return AlertDialog(
-              //           title: const Text('Confirm Logout'),
-              //           content: const Text('Are you sure you want to logout?'),
-              //           actions: [
-              //             Row(
-              //               children: [
-              //                 TextButton(
-              //                   onPressed: () {
-              //                     // Close the dialog
-              //                     Navigator.of(context).pop();
-              //                   },
-              //                   child: const Text(
-              //                     'Cancel',
-              //                     style: TextStyle(color: Colors.grey),
-              //                   ),
-              //                 ),
-              //                 const SizedBox(width: 55,),
-              //                 ElevatedButton(
-              //                   onPressed: () {
-              //                     // Handle the logout logic here
-              //                     Navigator.of(context).pop(); // Close the dialog
-              //                     // Add your logout logic
-              //                   },
-              //                   // style: ElevatedButton.styleFrom(
-              //                   //   backgroundColor: Colors.red, // Customize button color
-              //                   // ),
-              //                   child: const Text('Logout',
-              //                   style: TextStyle(color: Colors.red),
-              //                   ),
-              //                 ),
-              //               ],
-              //             ),
-
-              //           ],
-              //         );
-              //       },
-              //     );
-              //   },
-              // ),
-
-              //const Divider(),
             ],
           ),
         ),
       ),
     );
   }
-}
 
-void _showEditPasswordDialog(BuildContext context) {
-  final TextEditingController oldPasswordController = TextEditingController();
-  final TextEditingController newPasswordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
-  bool _obscureOldPassword = true;
-  bool _obscureNewPassword = true;
-  bool _obscureConfirmPassword = true;
+  void _showEditPasswordDialog(BuildContext context) {
+    final TextEditingController oldPasswordController =
+    TextEditingController();
+    final TextEditingController newPasswordController =
+    TextEditingController();
+    final TextEditingController confirmPasswordController =
+    TextEditingController();
 
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        contentPadding: const EdgeInsets.all(16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+    bool _obscurePassword = true;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Change your Password'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              'Change your Password',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16),
-            // Old Password field with eye icon
             TextField(
               controller: oldPasswordController,
-              obscureText: _obscureOldPassword,
-              decoration: InputDecoration(
-                labelText: 'Old Password',
-                floatingLabelBehavior: FloatingLabelBehavior.auto,
-                labelStyle: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey,
-                ),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _obscureOldPassword
-                        ? Icons.visibility_off
-                        : Icons.visibility,
-                    color: Colors.grey,
-                  ),
-                  onPressed: () {
-                    // Toggle the visibility
-                    _obscureOldPassword = !_obscureOldPassword;
-                    (context as Element).markNeedsBuild();
-                  },
-                ),
-              ),
+              obscureText: _obscurePassword,
+              decoration: const InputDecoration(labelText: 'Old Password'),
             ),
-            const SizedBox(height: 16),
-            // New Password field with eye icon
             TextField(
               controller: newPasswordController,
-              obscureText: _obscureNewPassword,
-              decoration: InputDecoration(
-                labelText: 'New Password',
-                floatingLabelBehavior: FloatingLabelBehavior.auto,
-                labelStyle: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey,
-                ),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _obscureNewPassword
-                        ? Icons.visibility_off
-                        : Icons.visibility,
-                    color: Colors.grey,
-                  ),
-                  onPressed: () {
-                    // Toggle the visibility
-                    _obscureNewPassword = !_obscureNewPassword;
-                    (context as Element).markNeedsBuild();
-                  },
-                ),
-              ),
+              obscureText: _obscurePassword,
+              decoration: const InputDecoration(labelText: 'New Password'),
             ),
-            const SizedBox(height: 16),
-            // Confirm New Password field with eye icon
             TextField(
               controller: confirmPasswordController,
-              obscureText: _obscureConfirmPassword,
-              decoration: InputDecoration(
-                labelText: 'Confirm New Password',
-                floatingLabelBehavior: FloatingLabelBehavior.auto,
-                labelStyle: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey,
-                ),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _obscureConfirmPassword
-                        ? Icons.visibility_off
-                        : Icons.visibility,
-                    color: Colors.grey,
-                  ),
-                  onPressed: () {
-                    // Toggle the visibility
-                    _obscureConfirmPassword = !_obscureConfirmPassword;
-                    (context as Element).markNeedsBuild();
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            // Buttons for Save and Cancel
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    // Handle the saving logic here
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Save'),
-                ),
-              ],
+              obscureText: _obscurePassword,
+              decoration:
+              const InputDecoration(labelText: 'Confirm New Password'),
             ),
           ],
         ),
-      );
-    },
-  );
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (newPasswordController.text ==
+                  confirmPasswordController.text) {
+                Navigator.of(context).pop();
+                // Handle password change logic
+              } else {
+                print('Passwords do not match!');
+              }
+            },
+            child: const Text('Change Password'),
+          ),
+        ],
+      ),
+    );
+  }
 }
